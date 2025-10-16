@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>骑行详情</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'PingFang SC', sans-serif;
+            background: #F8F9FA;
+            color: #1A1A1A;
+            overflow-x: hidden;
+            padding-bottom: 40px;
+        }
+
+        /* 头部区域 */
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 16px 20px 12px;
+            z-index: 100;
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .back-btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .back-btn:active {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .date-time {
+            font-size: 13px;
+            color: #86868B;
+            font-weight: 400;
+        }
+
+        .activity-type {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1A1A1A;
+            letter-spacing: -0.3px;
+        }
+
+        /* 地图容器 */
+        .map-container {
+            position: relative;
+            height: 280px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow: hidden;
+            margin: 0 20px 24px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.15);
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            background: 
+                linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: mapLoad 0.6s ease-out;
+        }
+
+        @keyframes mapLoad {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .map-stats {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            right: 16px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .map-stat-chip {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(20px);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* 核心数据区 */
+        .core-stats {
+            padding: 0 20px 32px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            animation: slideUp 0.5s ease-out 0.1s both;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px 16px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:active {
+            transform: scale(0.98);
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1A1A1A;
+            line-height: 1.2;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .stat-unit {
+            font-size: 12px;
+            font-weight: 600;
+            color: #86868B;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* 详细数据区 */
+        .detail-section {
+            margin: 0 20px 24px;
+            animation: slideUp 0.5s ease-out 0.2s both;
+        }
+
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #86868B;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+            padding-left: 4px;
+        }
+
+        .metrics-grid {
+            background: white;
+            border-radius: 16px;
+            padding: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 12px;
+            border-bottom: 0.5px solid rgba(0, 0, 0, 0.06);
+            transition: background 0.15s;
+        }
+
+        .metric-row:last-child {
+            border-bottom: none;
+        }
+
+        .metric-row:active {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .metric-label {
+            font-size: 15px;
+            color: #1A1A1A;
+            font-weight: 400;
+        }
+
+        .metric-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1A1A1A;
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+        }
+
+        .metric-value-unit {
+            font-size: 12px;
+            color: #86868B;
+            font-weight: 500;
+        }
+
+        /* 性能分析区 */
+        .performance-card {
+            background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
+            border-radius: 16px;
+            padding: 24px;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .performance-title {
+            font-size: 17px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: -0.3px;
+        }
+
+        .performance-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .perf-metric {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .perf-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        .perf-value {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .perf-unit {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-left: 4px;
+            font-weight: 500;
+        }
+
+        /* 进度条 */
+        .progress-section {
+            margin-top: 24px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50 0%, #8BC34A 100%);
+            border-radius: 3px;
+            animation: progressFill 1s ease-out 0.5s both;
+        }
+
+        @keyframes progressFill {
+            from {
+                width: 0;
+            }
+        }
+
+        /* 心率区间 */
+        .hr-zones {
+            display: flex;
+            gap: 4px;
+            margin-top: 12px;
+        }
+
+        .hr-zone {
+            flex: 1;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .hr-zone:active {
+            transform: scale(0.95);
+        }
+
+        .zone-1 { background: rgba(66, 165, 245, 0.2); color: #42A5F5; }
+        .zone-2 { background: rgba(102, 187, 106, 0.2); color: #66BB6A; }
+        .zone-3 { background: rgba(255, 202, 40, 0.2); color: #FFCA28; }
+        .zone-4 { background: rgba(255, 138, 101, 0.2); color: #FF8A65; }
+        .zone-5 { background: rgba(239, 83, 80, 0.2); color: #EF5350; }
+
+        /* 操作按钮 */
+        .action-section {
+            margin: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            animation: slideUp 0.5s ease-out 0.3s both;
+        }
+
+        .action-btn {
+            background: white;
+            border: 1.5px solid rgba(0, 0, 0, 0.08);
+            border-radius: 14px;
+            padding: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #1A1A1A;
+            text-align: center;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .action-btn:active {
+            transform: scale(0.97);
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .action-btn.primary {
+            background: #667eea;
+            color: white;
+            border: none;
+        }
+
+        .action-btn.primary:active {
+            background: #5568d3;
+        }
+
+        /* 响应式优化 */
+        @media (max-width: 375px) {
+            .stat-value {
+                font-size: 24px;
+            }
+            
+            .core-stats {
+                gap: 8px;
+            }
+            
+            .stat-card {
+                padding: 16px 12px;
+            }
+        }
+
+        /* 滚动优化 */
+        .scroll-container {
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <div class="header">
+        <div class="header-top">
+            <div class="back-btn" onclick="history.back()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+            </div>
+            <div class="date-time">今天 14:32</div>
+        </div>
+        <div class="activity-type">午后骑行</div>
+    </div>
+
+    <!-- 地图区域 -->
+    <div class="map-container">
+        <div class="map-placeholder">
+            路线地图
+        </div>
+        <div class="map-stats">
+            <div class="map-stat-chip">24.6 km</div>
+            <div class="map-stat-chip">1h 12m</div>
+        </div>
+    </div>
+
+    <!-- 核心数据 -->
+    <div class="core-stats">
+        <div class="stat-card">
+            <div class="stat-value">24.6</div>
+            <div class="stat-unit">距离 KM</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">1:12</div>
+            <div class="stat-unit">时间 H:M</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">20.5</div>
+            <div class="stat-unit">均速 KM/H</div>
+        </div>
+    </div>
+
+    <!-- 详细数据 -->
+    <div class="detail-section">
+        <div class="section-title">速度数据</div>
+        <div class="metrics-grid">
+            <div class="metric-row">
+                <div class="metric-label">平均速度</div>
+                <div class="metric-value">
+                    20.5
+                    <span class="metric-value-unit">km/h</span>
+                </div>
+            </div>
+            <div class="metric-row">
+                <div class="metric-label">最大速度</div>
+                <div class="metric-value">
+                    42.8
+                    <span class="metric-value-unit">km/h</span>
+                </div>
+            </div>
+            <div class="metric-row">
+                <div class="metric-label">平均配速</div>
+                <div class="metric-value">
+                    2:56
+                    <span class="metric-value-unit">min/km</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-section">
+        <div class="section-title">爬升数据</div>
+        <div class="metrics-grid">
+            <div class="metric-row">
+                <div class="metric-label">总爬升</div>
+                <div class="metric-value">
+                    438
+                    <span class="metric-value-unit">m</span>
+                </div>
+            </div>
+            <div class="metric-row">
+                <div class="metric-label">总下降</div>
+                <div class="metric-value">
+                    442
+                    <span class="metric-value-unit">m</span>
+                </div>
+            </div>
+            <div class="metric-row">
+                <div class="metric-label">最高海拔</div>
+                <div class="metric-value">
+                    286
+                    <span class="metric-value-unit">m</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 性能分析 -->
+    <div class="detail-section">
+        <div class="section-title">运动表现</div>
+        <div class="performance-card">
+            <div class="performance-title">生理数据</div>
+            <div class="performance-metrics">
+                <div class="perf-metric">
+                    <div class="perf-label">平均心率</div>
+                    <div class="perf-value">
+                        142
+                        <span class="perf-unit">bpm</span>
+                    </div>
+                </div>
+                <div class="perf-metric">
+                    <div class="perf-label">最大心率</div>
+                    <div class="perf-value">
+                        178
+                        <span class="perf-unit">bpm</span>
+                    </div>
+                </div>
+                <div class="perf-metric">
+                    <div class="perf-label">平均踏频</div>
+                    <div class="perf-value">
+                        86
+                        <span class="perf-unit">rpm</span>
+                    </div>
+                </div>
+                <div class="perf-metric">
+                    <div class="perf-label">消耗热量</div>
+                    <div class="perf-value">
+                        682
+                        <span class="perf-unit">kcal</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 训练负荷 -->
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>训练负荷</span>
+                    <span>适中</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 68%"></div>
+                </div>
+            </div>
+
+            <!-- 心率区间 -->
+            <div class="progress-section">
+                <div class="progress-label">
+                    <span>心率区间分布</span>
+                </div>
+                <div class="hr-zones">
+                    <div class="hr-zone zone-1">8%</div>
+                    <div class="hr-zone zone-2">32%</div>
+                    <div class="hr-zone zone-3">41%</div>
+                    <div class="hr-zone zone-4">15%</div>
+                    <div class="hr-zone zone-5">4%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 更多数据 -->
+    <div class="detail-section">
+        <div class="section-title">其他信息</div>
+        <div class="metrics-grid">
+            <div class="metric-row">
+                <div class="metric-label">开始时间</div>
+                <div class="metric-value">
+                    14:32
+                </div>
+            </div>
+            <div class="metric-row">
+                <div class="metric-label">结束时间</div>
+                <div class="metric-value">
+                    15:44
+                </div>
+            </div>
+            <div class="metric-row">
+                <div class="metric-label">运动时间</div>
+                <div class="metric-value">
+                    1:08:24
+                    <span class="metric-value-unit">h:m:s</span>
+                </div>
+            </div>
+            <div class="metric-row">
+                <div class="metric-label">暂停时间</div>
+                <div class="metric-value">
+                    3:36
+                    <span class="metric-value-unit">min</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 操作按钮 -->
+    <div class="action-section">
+        <button class="action-btn">分享活动</button>
+        <button class="action-btn primary">保存至相册</button>
+    </div>
+
+    <script>
+        // 滚动动画优化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 添加滚动监听，优化性能
+            let ticking = false;
+            
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(function() {
+                        // 这里可以添加滚动时的交互效果
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+
+            // 卡片点击反馈
+            const cards = document.querySelectorAll('.stat-card, .metric-row');
+            cards.forEach(card => {
+                card.addEventListener('touchstart', function() {
+                    this.style.transition = 'transform 0.1s';
+                });
+                card.addEventListener('touchend', function() {
+                    this.style.transition = 'transform 0.2s';
+                });
+            });
+
+            // 模拟数据加载动画
+            setTimeout(() => {
+                document.querySelectorAll('.stat-value').forEach((el, index) => {
+                    el.style.animation = `countUp 0.8s ease-out ${index * 0.1}s both`;
+                });
+            }, 200);
+
+            // 按钮点击效果
+            document.querySelectorAll('.action-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    // 创建涟漪效果
+                    const ripple = document.createElement('div');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.cssText = `
+                        position: absolute;
+                        width: ${size}px;
+                        height: ${size}px;
+                        border-radius: 50%;
+                        background: rgba(255, 255, 255, 0.5);
+                        left: ${x}px;
+                        top: ${y}px;
+                        transform: scale(0);
+                        animation: ripple 0.6s ease-out;
+                        pointer-events: none;
+                    `;
+                    
+                    this.style.position = 'relative';
+                    this.style.overflow = 'hidden';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+        });
+
+        // 添加计数动画的keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes countUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes ripple {
+                to {
+                    transform: scale(2);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // 模拟返回按钮功能
+        document.querySelector('.back-btn').addEventListener('click', function() {
+            // 添加退出动画
+            document.body.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(() => {
+                console.log('返回上一页');
+                // window.history.back();
+            }, 300);
+        });
+
+        const exitAnimation = document.createElement('style');
+        exitAnimation.textContent = `
+            @keyframes slideOut {
+                to {
+                    opacity: 0;
+                    transform: translateX(20px);
+                }
+            }
+        `;
+        document.head.appendChild(exitAnimation);
+    </script>
+</body>
+</html>

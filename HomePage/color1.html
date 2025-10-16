@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>版本一 - 优化原配色</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #30353f;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+        }
+
+        .status-bar {
+            background: linear-gradient(135deg, #444954 0%, #30353f 100%);
+            color: white;
+            padding: 16px 20px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(15, 16, 19, 0.12);
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .user-greeting {
+            font-size: 14px;
+            opacity: 0.7;
+            font-weight: 400;
+            color: #b6bcc8;
+        }
+
+        .user-name {
+            font-size: 22px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #56c2d0 0%, #3aabba 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            box-shadow: 0 4px 12px rgba(56, 194, 208, 0.3);
+        }
+
+        .today-summary {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 16px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-value {
+            font-size: 24px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 4px;
+            color: #beecf3;
+        }
+
+        .summary-label {
+            font-size: 11px;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #9da4b2;
+        }
+
+        .main-content {
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 12px rgba(15, 16, 19, 0.06);
+            border: 1px solid #e3e6ec;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #30353f;
+        }
+
+        .card-action {
+            color: #3aabba;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .training-load {
+            background: linear-gradient(135deg, #30353f 0%, #444954 100%);
+            color: white;
+            border: none;
+        }
+
+        .load-display {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .load-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: #56c2d0;
+            line-height: 1;
+        }
+
+        .load-status {
+            font-size: 14px;
+            color: #b6bcc8;
+            margin-bottom: 8px;
+        }
+
+        .load-bar-container {
+            background: rgba(255, 255, 255, 0.1);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .load-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #56c2d0 0%, #3aabba 100%);
+            border-radius: 4px;
+            width: 68%;
+            box-shadow: 0 0 12px rgba(56, 194, 208, 0.5);
+        }
+
+        .load-range {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #838a9a;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .metric-box {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #e3e6ec;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #717888;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: #30353f;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .metric-unit {
+            font-size: 14px;
+            font-weight: 400;
+            color: #838a9a;
+            margin-left: 4px;
+        }
+
+        .metric-change {
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .metric-change.positive {
+            color: #3aabba;
+        }
+
+        .metric-change.neutral {
+            color: #838a9a;
+        }
+
+        .week-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 120px;
+            margin-top: 16px;
+            padding: 0 4px;
+        }
+
+        .chart-bar {
+            flex: 1;
+            margin: 0 3px;
+            background: linear-gradient(180deg, #d2d6de 0%, #b6bcc8 100%);
+            border-radius: 4px 4px 0 0;
+            transition: all 0.3s ease;
+            min-height: 20px;
+        }
+
+        .chart-bar.today {
+            background: linear-gradient(180deg, #56c2d0 0%, #3aabba 100%);
+            box-shadow: 0 -4px 12px rgba(56, 194, 208, 0.3);
+        }
+
+        .chart-label {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            padding: 0 4px;
+        }
+
+        .chart-day {
+            flex: 1;
+            text-align: center;
+            font-size: 11px;
+            color: #838a9a;
+            margin: 0 3px;
+        }
+
+        .chart-day.today {
+            color: #3aabba;
+            font-weight: 600;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .action-btn {
+            background: white;
+            border: 1px solid #e3e6ec;
+            border-radius: 12px;
+            padding: 16px 8px;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .action-btn:active {
+            background: #f8f9fa;
+            transform: scale(0.95);
+        }
+
+        .action-icon {
+            width: 32px;
+            height: 32px;
+            margin: 0 auto 8px;
+            background: linear-gradient(135deg, #beecf3 0%, #91dde7 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #1e7d8a;
+        }
+
+        .action-label {
+            font-size: 11px;
+            color: #595f6d;
+            font-weight: 500;
+        }
+
+        .upcoming-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            border-left: 4px solid #3aabba;
+        }
+
+        .upcoming-date {
+            flex-shrink: 0;
+            width: 50px;
+            text-align: center;
+            margin-right: 16px;
+        }
+
+        .upcoming-day {
+            font-size: 24px;
+            font-weight: 700;
+            color: #3aabba;
+            line-height: 1;
+        }
+
+        .upcoming-month {
+            font-size: 11px;
+            color: #838a9a;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .upcoming-info {
+            flex: 1;
+        }
+
+        .upcoming-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #30353f;
+            margin-bottom: 4px;
+        }
+
+        .upcoming-detail {
+            font-size: 12px;
+            color: #838a9a;
+        }
+
+        .upcoming-type {
+            background: #beecf3;
+            color: #1e7d8a;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .performance-ring {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #3aabba 0deg 245deg,
+                #e3e6ec 245deg 360deg
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .performance-ring::before {
+            content: '';
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .performance-value {
+            position: relative;
+            z-index: 1;
+            font-size: 20px;
+            font-weight: 700;
+            color: #3aabba;
+        }
+
+        .performance-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .performance-info {
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        .performance-label {
+            font-size: 12px;
+            color: #838a9a;
+            margin-bottom: 4px;
+        }
+
+        .performance-status {
+            font-size: 16px;
+            font-weight: 600;
+            color: #30353f;
+        }
+
+        .performance-tip {
+            font-size: 12px;
+            color: #838a9a;
+            margin-top: 4px;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e3e6ec;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 0;
+            z-index: 100;
+        }
+
+        .nav-item {
+            flex: 1;
+            text-align: center;
+            color: #838a9a;
+            text-decoration: none;
+        }
+
+        .nav-item.active {
+            color: #3aabba;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            margin: 0 auto 4px;
+            background: currentColor;
+            border-radius: 6px;
+            opacity: 0.2;
+        }
+
+        .nav-item.active .nav-icon {
+            opacity: 1;
+            background: linear-gradient(135deg, #56c2d0 0%, #3aabba 100%);
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <div class="status-header">
+            <div>
+                <div class="user-greeting">早安</div>
+                <div class="user-name">骑行者</div>
+            </div>
+            <div class="profile-icon">R</div>
+        </div>
+        <div class="today-summary">
+            <div class="summary-item">
+                <span class="summary-value">42</span>
+                <span class="summary-label">公里</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-value">1:38</span>
+                <span class="summary-label">时长</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-value">245</span>
+                <span class="summary-label">瓦特</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="quick-actions">
+            <div class="action-btn">
+                <div class="action-icon">▶</div>
+                <div class="action-label">开始训练</div>
+            </div>
+            <div class="action-btn">
+                <div class="action-icon">📊</div>
+                <div class="action-label">数据分析</div>
+            </div>
+            <div class="action-btn">
+                <div class="action-icon">📅</div>
+                <div class="action-label">训练计划
+			</div>
+            </div>
+            <div class="action-btn">
+                <div class="action-icon">🏆</div>
+                <div class="action-label">赛事</div>
+            </div>
+        </div>
+
+        <div class="card training-load">
+            <div class="card-header">
+                <h3 class="card-title" style="color: white;">训练负荷</h3>
+                <a href="#" class="card-action" style="color: #91dde7;">详情</a>
+            </div>
+            <div class="load-display">
+                <div class="load-value">342</div>
+                <div class="load-status">适度负荷</div>
+            </div>
+            <div class="load-bar-container">
+                <div class="load-bar"></div>
+            </div>
+            <div class="load-range">
+                <span>恢复 (0-200)</span>
+                <span>过度 (500+)</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">关键指标</h3>
+                <a href="#" class="card-action">查看全部</a>
+            </div>
+            <div class="metrics-grid">
+                <div class="metric-box">
+                    <div class="metric-label">平均心率</div>
+                    <div class="metric-value">142<span class="metric-unit">bpm</span></div>
+                    <div class="metric-change positive">▲ 3% vs 上周</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">平均功率</div>
+                    <div class="metric-value">245<span class="metric-unit">W</span></div>
+                    <div class="metric-change positive">▲ 8% vs 上周</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">功率体重比</div>
+                    <div class="metric-value">3.8<span class="metric-unit">W/kg</span></div>
+                    <div class="metric-change positive">▲ 0.2 vs 上周</div>
+                </div>
+                <div class="metric-box">
+                    <div class="metric-label">压力分数</div>
+                    <div class="metric-value">62<span class="metric-unit">TSS</span></div>
+                    <div class="metric-change neutral">— 持平</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">本周训练量</h3>
+                <a href="#" class="card-action">周报告</a>
+            </div>
+            <div class="week-chart">
+                <div class="chart-bar" style="height: 45%;"></div>
+                <div class="chart-bar" style="height: 68%;"></div>
+                <div class="chart-bar" style="height: 52%;"></div>
+                <div class="chart-bar" style="height: 78%;"></div>
+                <div class="chart-bar" style="height: 35%;"></div>
+                <div class="chart-bar today" style="height: 82%;"></div>
+                <div class="chart-bar" style="height: 20%; opacity: 0.3;"></div>
+            </div>
+            <div class="chart-label">
+                <span class="chart-day">周一</span>
+                <span class="chart-day">周二</span>
+                <span class="chart-day">周三</span>
+                <span class="chart-day">周四</span>
+                <span class="chart-day">周五</span>
+                <span class="chart-day today">周六</span>
+                <span class="chart-day">周日</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">表现状态</h3>
+                <a href="#" class="card-action">历史记录</a>
+            </div>
+            <div class="performance-container">
+                <div class="performance-ring">
+                    <div class="performance-value">68%</div>
+                </div>
+                <div class="performance-info">
+                    <div class="performance-label">当前状态</div>
+                    <div class="performance-status">良好 - 继续保持</div>
+                    <div class="performance-tip">建议进行中等强度训练</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">即将到来</h3>
+                <a href="#" class="card-action">全部日程</a>
+            </div>
+            <div class="upcoming-item">
+                <div class="upcoming-date">
+                    <div class="upcoming-day">18</div>
+                    <div class="upcoming-month">十月</div>
+                </div>
+                <div class="upcoming-info">
+                    <div class="upcoming-title">间歇训练 - 高强度</div>
+                    <div class="upcoming-detail">5×5分钟 @ 区间4 | 90分钟</div>
+                </div>
+                <div class="upcoming-type">训练</div>
+            </div>
+            <div class="upcoming-item">
+                <div class="upcoming-date">
+                    <div class="upcoming-day">22</div>
+                    <div class="upcoming-month">十月</div>
+                </div>
+                <div class="upcoming-info">
+                    <div class="upcoming-title">长距离耐力骑行</div>
+                    <div class="upcoming-detail">120公里 @ 区间2 | 4小时</div>
+                </div>
+                <div class="upcoming-type">训练</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <div class="nav-icon"></div>
+            <div class="nav-label">首页</div>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <div class="nav-label">训练</div>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <div class="nav-label">数据</div>
+        </a>
+        <a href="#" class="nav-item">
+            <div class="nav-icon"></div>
+            <div class="nav-label">我的</div>
+        </a>
+    </div>
+</body>
+</html>
