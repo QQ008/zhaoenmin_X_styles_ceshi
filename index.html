@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>CycleMetrics Pro - 首页</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* 灰度色板 */
+            --gray-0: #f8f9fa;
+            --gray-5: #e3e6ec;
+            --gray-10: #d2d6de;
+            --gray-20: #b6bcc8;
+            --gray-30: #9da4b2;
+            --gray-40: #838a9a;
+            --gray-50: #717888;
+            --gray-60: #595f6d;
+            --gray-70: #444954;
+            --gray-80: #30353f;
+            --gray-90: #1f2227;
+            --gray-100: #0f1013;
+            
+            /* 主题色 - Cyan */
+            --cyan-0: #eafcff;
+            --cyan-5: #beecf3;
+            --cyan-10: #91dde7;
+            --cyan-20: #56c2d0;
+            --cyan-30: #3aabba;
+            --cyan-40: #2894a3;
+            --cyan-50: #1e7d8a;
+            --cyan-60: #176772;
+            --cyan-70: #13545d;
+            --cyan-80: #0f464c;
+            --cyan-90: #0d393f;
+            --cyan-100: #0b2e32;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(180deg, var(--gray-0) 0%, var(--gray-5) 100%);
+            min-height: 100vh;
+            color: var(--gray-90);
+            overflow-x: hidden;
+        }
+
+        /* 顶部导航栏 */
+        .nav-header {
+            background: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(15, 16, 19, 0.06);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--gray-90);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-date {
+            font-size: 12px;
+            color: var(--gray-50);
+            margin-top: 2px;
+        }
+
+        .nav-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--cyan-5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--cyan-60);
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* 主容器 */
+        .container {
+            padding: 20px 16px 80px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* 训练负荷卡片 - 核心数据 */
+        .training-load-card {
+            background: linear-gradient(135deg, var(--cyan-50) 0%, var(--cyan-60) 100%);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(30, 125, 138, 0.3);
+        }
+
+        .training-load-card::before {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            top: -50px;
+            right: -50px;
+        }
+
+        .load-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .load-title {
+            color: var(--cyan-5);
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .load-badge {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .load-value {
+            font-size: 48px;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 8px;
+            letter-spacing: -2px;
+        }
+
+        .load-unit {
+            font-size: 16px;
+            font-weight: 400;
+            margin-left: 4px;
+            opacity: 0.9;
+        }
+
+        .load-progress {
+            display: flex;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: white;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        /* 今日训练计划 */
+        .training-plan {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(15, 16, 19, 0.08);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-90);
+        }
+
+        .ai-badge {
+            background: linear-gradient(135deg, var(--cyan-20) 0%, var(--cyan-30) 100%);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .training-content {
+            background: var(--gray-0);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid var(--gray-10);
+        }
+
+        .training-type {
+            color: var(--cyan-50);
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .training-description {
+            color: var(--gray-80);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .training-metrics {
+            display: flex;
+            gap: 20px;
+            padding-top: 12px;
+            border-top: 1px solid var(--gray-10);
+        }
+
+        .metric-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: var(--gray-50);
+            margin-bottom: 2px;
+        }
+
+        .metric-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-90);
+        }
+
+        /* 快速统计卡片组 */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(15, 16, 19, 0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .stat-card:active {
+            transform: scale(0.98);
+        }
+
+        .stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+
+        .stat-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .stat-icon.distance {
+            background: var(--cyan-5);
+            color: var(--cyan-60);
+        }
+
+        .stat-icon.elevation {
+            background: #fef3e2;
+            color: #f59e0b;
+        }
+
+        .stat-icon.power {
+            background: #f3e8ff;
+            color: #8b5cf6;
+        }
+
+        .stat-icon.vo2 {
+            background: #fee2e2;
+            color: #ef4444;
+        }
+
+        /* 新增数据卡片 */
+        .data-cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .data-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(15, 16, 19, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .data-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--cyan-40), var(--cyan-60));
+        }
+
+        .data-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .data-card-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-80);
+        }
+
+        .data-card-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--cyan-50);
+        }
+
+        .data-card-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .data-card-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-90);
+            margin-bottom: 4px;
+        }
+
+        .data-card-unit {
+            font-size: 12px;
+            color: var(--gray-50);
+        }
+
+        .data-card-trend {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 8px;
+            font-size: 11px;
+        }
+
+        .data-card-trend.up {
+            color: #10b981;
+        }
+
+        .data-card-trend.down {
+            color: #ef4444;
+        }
+
+        /* 功率图表容器 */
+        .power-chart {
+            width: 100%;
+            height: 60px;
+            margin: 12px 0;
+            position: relative;
+        }
+
+        .chart-svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .chart-line {
+            fill: none;
+            stroke: var(--cyan-50);
+            stroke-width: 2;
+        }
+
+        .chart-area {
+            fill: url(#powerGradient);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--gray-50);
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-90);
+            letter-spacing: -0.5px;
+        }
+
+        .stat-unit {
+            font-size: 12px;
+            color: var(--gray-40);
+            font-weight: 400;
+            margin-left: 2px;
+        }
+
+        /* 周报摘要 */
+        .weekly-summary {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(15, 16, 19, 0.08);
+        }
+
+        .summary-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 80px;
+            margin-top: 16px;
+            padding: 0 8px;
+        }
+
+        .chart-bar {
+            flex: 1;
+            background: var(--gray-10);
+            border-radius: 4px 4px 0 0;
+            margin: 0 3px;
+            position: relative;
+            transition: background 0.2s ease;
+        }
+
+        .chart-bar.active {
+            background: var(--cyan-40);
+        }
+
+        .chart-bar.today {
+            background: var(--cyan-50);
+        }
+
+        /* 底部浮动操作按钮 */
+        .fab {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyan-40) 0%, var(--cyan-50) 100%);
+            color: white;
+            border: none;
+            box-shadow: 0 8px 24px rgba(30, 125, 138, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            z-index: 90;
+        }
+
+        .fab:active {
+            transform: scale(0.95);
+            box-shadow: 0 4px 12px rgba(30, 125, 138, 0.3);
+        }
+
+        /* 底部导航 - 毛玻璃效果 */
+        .bottom-nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(15, 16, 19, 0.12);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 100;
+        }
+
+        .nav-item {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-50);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-item.active {
+            background: var(--cyan-50);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 4px 16px rgba(30, 125, 138, 0.3);
+        }
+
+        .nav-item:not(.active):hover {
+            background: rgba(30, 125, 138, 0.1);
+            color: var(--cyan-60);
+        }
+
+        .nav-item-icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .nav-item-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* 动画 */
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .container > * {
+            animation: slideUp 0.6s ease forwards;
+            opacity: 0;
+        }
+
+        .container > *:nth-child(1) { animation-delay: 0.1s; }
+        .container > *:nth-child(2) { animation-delay: 0.2s; }
+        .container > *:nth-child(3) { animation-delay: 0.3s; }
+        .container > *:nth-child(4) { animation-delay: 0.4s; }
+        .container > *:nth-child(5) { animation-delay: 0.5s; }
+
+        .fab {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .nav-item.active {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 16px 12px 80px;
+            }
+            
+            .nav-header {
+                padding: 12px 16px;
+            }
+            
+            .nav-title {
+                font-size: 18px;
+            }
+            
+            .bottom-nav {
+                width: 260px;
+                height: 56px;
+                bottom: 16px;
+            }
+            
+            .stat-card, .data-card {
+                padding: 14px;
+            }
+            
+            .data-card-value {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <header class="nav-header">
+        <div>
+            <div class="nav-title">hi, QQ</div>
+            <div class="nav-date">2024年10月17日</div>
+        </div>
+        <div class="nav-icon">zh</div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container">
+        <!-- 训练负荷卡片 -->
+        <div class="training-load-card">
+            <div class="load-header">
+                <div class="load-title">本周训练负荷</div>
+                <div class="load-badge">最佳状态</div>
+            </div>
+            <div class="load-value">
+                78<span class="load-unit">TSS</span>
+            </div>
+            <div class="loa```html
+            <div class="load-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 78%"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 今日训练计划 -->
+        <div class="training-plan">
+            <div class="section-header">
+                <h2 class="section-title">今日训练</h2>
+                <div class="ai-badge">
+                    <span>⚡</span>
+                    <span>AI推荐</span>
+                </div>
+            </div>
+            <div class="training-content">
+                <div class="training-type">间歇训练</div>
+                <div class="training-description">
+                    VO₂ Max 间歇训练 - 提升最大摄氧量
+                </div>
+                
+                <!-- 功率图表 -->
+                <div class="power-chart">
+                    <svg class="chart-svg" viewBox="0 0 300 60">
+                        <defs>
+                            <linearGradient id="powerGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" style="stop-color:var(--cyan-50);stop-opacity:0.8" />
+                                <stop offset="100%" style="stop-color:var(--cyan-50);stop-opacity:0.1" />
+                            </linearGradient>
+                        </defs>
+                        <path class="chart-area" d="M0,60 L0,45 Q25,40 50,35 T100,30 T150,25 T200,20 T250,25 T300,30 L300,60 Z"/>
+                        <path class="chart-line" d="M0,45 Q25,40 50,35 T100,30 T150,25 T200,20 T250,25 T300,30"/>
+                    </svg>
+                </div>
+                
+                <div class="training-metrics">
+                    <div class="metric-item">
+                        <span class="metric-label">总时长</span>
+                        <span class="metric-value">55分钟</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">强度</span>
+                        <span class="metric-value">中高</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-label">预计TSS</span>
+                        <span class="metric-value">85</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 快速统计 -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon distance">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="5.5" cy="17.5" r="3.5"/>
+                        <circle cx="18.5" cy="17.5" r="3.5"/>
+                        <path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2"/>
+                        <path d="m9 17.5-4-6 4-6"/>
+                        <path d="m8.5 11.5h3l4-4"/>
+                        <path d="m8.5 11.5 3 3"/>
+                        <path d="m11.5 14.5 3-3"/>
+                    </svg>
+                </div>
+                <div class="stat-label">本周里程</div>
+                <div class="stat-value">
+                    286<span class="stat-unit">km</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon elevation">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m3 20 1.3-3.9A1 1 0 0 1 5.4 16h13.2a1 1 0 0 1 1.1.1L21 20"/>
+                        <path d="m7 20 5-9 5 9"/>
+                        <path d="M10 12 8 20"/>
+                        <path d="M14 12l2 8"/>
+                    </svg>
+                </div>
+                <div class="stat-label">本周爬升</div>
+                <div class="stat-value">
+                    3,420<span class="stat-unit">m</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon power">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2"/>
+                    </svg>
+                </div>
+                <div class="stat-label">FTP功率</div>
+                <div class="stat-value">
+                    285<span class="stat-unit">W</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon vo2">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                    </svg>
+                </div>
+                <div class="stat-label">VO₂ Max</div>
+                <div class="stat-value">
+                    62.5<span class="stat-unit">ml/kg/min</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 新增数据卡片 -->
+        <div class="data-cards">
+            <div class="data-card">
+                <div class="data-card-header">
+                    <div class="data-card-title">平均心率</div>
+                    <div class="data-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l9 9Z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="data-card-value">156</div>
+                <div class="data-card-unit">bpm</div>
+                <div class="data-card-trend up">
+                    <svg width="12" height="12"><polyline points="0,8 4,4 8,8" stroke="currentColor" fill="none"/></svg>
+                    +5% 本周
+                </div>
+            </div>
+            <div class="data-card">
+                <div class="data-card-header">
+                    <div class="data-card-title">训练时长</div>
+                    <div class="data-card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12,6 12,12 16,14"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="data-card-value">12.5</div>
+                <div class="data-card-unit">小时</div>
+                <div class="data-card-trend up">
+                    <svg width="12" height="12"><polyline points="0,8 4,4 8,8" stroke="currentColor" fill="none"/></svg>
+                    +2.3h 本周
+                </div>
+            </div>
+        </div>
+
+        <!-- 周报摘要 -->
+        <div class="weekly-summary">
+            <div class="section-header">
+                <h2 class="section-title">本周训练</h2>
+                <span style="font-size: 12px; color: var(--gray-50);">7天趋势</span>
+            </div>
+            <div class="summary-chart">
+                <div class="chart-bar active" style="height: 60%"></div>
+                <div class="chart-bar active" style="height: 80%"></div>
+                <div class="chart-bar active" style="height: 45%"></div>
+                <div class="chart-bar active" style="height: 90%"></div>
+                <div class="chart-bar active" style="height: 70%"></div>
+                <div class="chart-bar active" style="height: 85%"></div>
+                <div class="chart-bar today" style="height: 78%"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 浮动操作按钮 -->
+    <button class="fab">+</button>
+
+    <!-- 底部导航 -->
+    <nav class="bottom-nav">
+            <div class="nav-item active">
+                <div class="nav-item-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"/>
+                        <circle cx="12" cy="12" r="6"/>
+                        <circle cx="12" cy="12" r="2"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-item-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                        <line x1="16" y1="2" x2="16" y2="6"/>
+                        <line x1="8" y1="2" x2="8" y2="6"/>
+                        <line x1="3" y1="10" x2="21" y2="10"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-item-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"/>
+                        <polyline points="17,6 23,6 23,12"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="nav-item">
+                <div class="nav-item-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                </div>
+            </div>
+    </nav>
+
+    <script>
+        // 添加交互效果
+        document.addEventListener('DOMContentLoaded', function() {
+            // 训练负荷动画
+            const progressFill = document.querySelector('.progress-fill');
+            setTimeout(() => {
+                progressFill.style.width = '78%';
+            }, 800);
+
+            // 统计卡片点击效果
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 150);
+                });
+            });
+
+            // 底部导航切换
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 浮动按钮点击效果
+            const fab = document.querySelector('.fab');
+            let isRotated = false;
+            fab.addEventListener('click', function() {
+                if (!isRotated) {
+                    this.style.transform = 'rotate(45deg)';
+                    isRotated = true;
+                } else {
+                    this.style.transform = 'rotate(0deg)';
+                    isRotated = false;
+                }
+            });
+
+            // 训练计划卡片滑动提示
+            const trainingPlan = document.querySelector('.training-plan');
+            let startX = 0;
+            let currentX = 0;
+            let isDragging = false;
+
+            trainingPlan.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+                isDragging = true;
+            });
+
+            trainingPlan.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                currentX = e.touches[0].clientX;
+                const diff = currentX - startX;
+                
+                if (Math.abs(diff) > 50) {
+                    trainingPlan.style.transform = `translateX(${diff * 0.3}px)`;
+                    trainingPlan.style.opacity = '0.8';
+                }
+            });
+
+            trainingPlan.addEventListener('touchend', () => {
+                isDragging = false;
+                trainingPlan.style.transform = 'translateX(0)';
+                trainingPlan.style.opacity = '1';
+                trainingPlan.style.transition = 'all 0.3s ease';
+                
+                setTimeout(() => {
+                    trainingPlan.style.transition = '';
+                }, 300);
+            });
+
+            // 下拉刷新效果模拟
+            let pullStart = 0;
+            let pullCurrent = 0;
+            let isPulling = false;
+
+            document.addEventListener('touchstart', (e) => {
+                if (window.scrollY === 0) {
+                    pullStart = e.touches[0].clientY;
+                    isPulling = true;
+                }
+            });
+
+            document.addEventListener('touchmove', (e) => {
+                if (!isPulling) return;
+                pullCurrent = e.touches[0].clientY;
+                const pullDistance = pullCurrent - pullStart;
+                
+                if (pullDistance > 0 && pullDistance < 100) {
+                    document.body.style.transform = `translateY(${pullDistance * 0.5}px)`;
+                }
+            });
+
+            document.addEventListener('touchend', () => {
+                if (isPulling) {
+                    const pullDistance = pullCurrent - pullStart;
+                    if (pullDistance > 80) {
+                        // 触发刷新
+                        document.body.style.transform = 'translateY(40px)';
+                        setTimeout(() => {
+                            document.body.style.transform = 'translateY(0)';
+                            document.body.style.transition = 'transform 0.3s ease';
+                            
+                            // 刷新数据动画
+                            const loadValue = document.querySelector('.load-value');
+                            loadValue.style.opacity = '0.5';
+                            setTimeout(() => {
+                                loadValue.style.opacity = '1';
+                            }, 500);
+                        }, 1000);
+                    } else {
+                        document.body.style.transform = 'translateY(0)';
+                        document.body.style.transition = 'transform 0.3s ease';
+                    }
+                    
+                    setTimeout(() => {
+                        document.body.style.transition = '';
+                    }, 300);
+                }
+                isPulling = false;
+                pullStart = 0;
+                pullCurrent = 0;
+            });
+
+            // 数字增长动画
+            function animateValue(element, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const current = Math.floor(progress * (end - start) + start);
+                    element.textContent = current;
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+
+            // 应用到训练负荷值
+            const loadValueElement = document.querySelector('.load-value');
+            const loadText = loadValueElement.innerHTML;
+            loadValueElement.innerHTML = '0<span class="load-unit">TSS</span>';
+            
+            setTimeout(() => {
+                animateValue(loadValueElement, 0, 78, 1500);
+                setTimeout(() => {
+                    loadValueElement.innerHTML = loadText;
+                }, 1500);
+            }, 500);
+        });
+    </script>
+</body>
+</html>
