@@ -1,0 +1,1096 @@
+/* 全局样式重置和变量定义 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* 灰度色板 */
+    --gray-0: #f8f9fa;
+    --gray-5: #e3e6ec;
+    --gray-10: #d2d6de;
+    --gray-20: #b6bcc8;
+    --gray-30: #9da4b2;
+    --gray-40: #838a9a;
+    --gray-50: #717888;
+    --gray-60: #595f6d;
+    --gray-70: #444954;
+    --gray-80: #30353f;
+    --gray-90: #1f2227;
+    --gray-100: #0f1013;
+    
+    /* 主题色 - Cyan */
+    --cyan-0: #eafcff;
+    --cyan-5: #beecf3;
+    --cyan-10: #91dde7;
+    --cyan-20: #56c2d0;
+    --cyan-30: #3aabba;
+    --cyan-40: #2894a3;
+    --cyan-50: #1e7d8a;
+    --cyan-60: #176772;
+    --cyan-70: #13545d;
+    --cyan-80: #0f464c;
+    --cyan-90: #0d393f;
+    --cyan-100: #0b2e32;
+
+    /* 语义色彩 */
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    
+    /* 间距系统 */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+    
+    /* 圆角系统 */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    
+    /* 阴影系统 */
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1);
+    
+    /* 动画时长 */
+    --transition-fast: 150ms;
+    --transition-base: 250ms;
+    --transition-slow: 350ms;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: var(--gray-0);
+    color: var(--gray-90);
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+/* 导航栏样式 */
+.navbar {
+    background: white;
+    border-bottom: 1px solid var(--gray-5);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--shadow-sm);
+}
+
+.nav-container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2xl);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--gray-90);
+}
+
+.logo-icon {
+    width: 32px;
+    height: 32px;
+    color: var(--cyan-50);
+}
+
+.logo-text {
+    letter-spacing: -0.5px;
+}
+
+.nav-links {
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    color: var(--gray-60);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+    font-size: 14px;
+    font-weight: 500;
+    position: relative;
+}
+
+.nav-item:hover {
+    color: var(--gray-90);
+    background: var(--gray-0);
+}
+
+.nav-item.active {
+    color: var(--cyan-60);
+    background: var(--cyan-0);
+}
+
+.nav-item.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: var(--spacing-md);
+    right: var(--spacing-md);
+    height: 2px;
+    background: var(--cyan-50);
+}
+
+.nav-icon {
+    width: 18px;
+    height: 18px;
+    display: block;
+    background: currentColor;
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+}
+
+.nav-icon.dashboard {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='3' y='3' width='7' height='7'/%3E%3Crect x='14' y='3' width='7' height='7'/%3E%3Crect x='3' y='14' width='7' height='7'/%3E%3Crect x='14' y='14' width='7' height='7'/%3E%3C/svg%3E");
+}
+
+.nav-icon.calendar {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='3' y='4' width='18' height='18' rx='2'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3C/svg%3E");
+}
+
+.nav-icon.analytics {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cline x1='18' y1='20' x2='18' y2='10'/%3E%3Cline x1='12' y1='20' x2='12' y2='4'/%3E%3Cline x1='6' y1='20' x2='6' y2='14'/%3E%3C/svg%3E");
+}
+
+.nav-icon.athletes {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='M23 21v-2a4 4 0 0 0-3-3.87'/%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'/%3E%3C/svg%3E");
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+}
+
+.nav-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.nav-button {
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: var(--gray-0);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-button:hover {
+    background: var(--gray-5);
+}
+
+.nav-button::after {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background: var(--gray-60);
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+}
+
+.nav-button.notification::after {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9'/%3E%3Cpath d='M13.73 21a2 2 0 0 1-3.46 0'/%3E%3C/svg%3E");
+}
+
+.nav-button.search::after {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E");
+}
+
+.notification-dot {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    background: var(--danger);
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding-left: var(--spacing-lg);
+    border-left: 1px solid var(--gray-10);
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--cyan-40), var(--cyan-60));
+    color: white;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-90);
+}
+
+.user-role {
+    font-size: 12px;
+    color: var(--gray-50);
+}
+
+/* 主内容区域 */
+.main-content {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: var(--spacing-xl) var(--spacing-lg);
+}
+
+/* 紧急通知栏 */
+.alerts-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.alerts-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.alerts-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--gray-90);
+}
+
+.btn-text {
+    background: none;
+    border: none;
+    color: var(--cyan-50);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color var(--transition-base);
+}
+
+.btn-text:hover {
+    color: var(--cyan-60);
+}
+
+.alerts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.alert-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    border: 1px solid var(--gray-5);
+    transition: all var(--transition-base);
+}
+
+.alert-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.alert-card.priority-high {
+    border-left: 3px solid var(--danger);
+}
+
+.alert-card.priority-medium {
+    border-left: 3px solid var(--warning);
+}
+
+.alert-card.priority-low {
+    border-left: 3px solid var(--cyan-50);
+}
+
+.alert-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
+.priority-high .alert-icon {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+}
+
+.priority-medium .alert-icon {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+}
+
+.priority-low .alert-icon {
+    background: linear-gradient(135deg, var(--cyan-0), var(--cyan-5));
+}
+
+.alert-content {
+    flex: 1;
+}
+
+.alert-content h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-90);
+    margin-bottom: var(--spacing-xs);
+}
+
+.alert-content p {
+    font-size: 13px;
+    color: var(--gray-60);
+    margin-bottom: var(--spacing-sm);
+}
+
+.alert-time {
+    font-size: 12px;
+    color: var(--gray-40);
+}
+
+.btn-primary-small,
+.btn-secondary-small {
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.btn-primary-small {
+    background: var(--cyan-50);
+    color: white;
+}
+
+.btn-primary-small:hover {
+    background: var(--cyan-60);
+}
+
+.btn-secondary-small {
+    background: var(--gray-5);
+    color: var(--gray-70);
+}
+
+.btn-secondary-small:hover {
+    background: var(--gray-10);
+}
+
+/* 关键指标概览 */
+.metrics-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+}
+
+.metric-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--gray-5);
+}
+
+.metric-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.metric-label {
+    font-size: 13px;
+    color: var(--gray-50);
+    font-weight: 500;
+}
+
+.metric-trend {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+}
+
+.metric-trend.up {
+    color: var(--success);
+    background: #d1fae5;
+}
+
+.metric-trend.down {
+    color: var(--danger);
+    background: #fee2e2;
+}
+
+.metric-trend.neutral {
+    color: var(--gray-50);
+    background: var(--gray-5);
+}
+
+.metric-value {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--gray-90);
+    margin-bottom: var(--spacing-md);
+    letter-spacing: -1px;
+}
+
+.metric-chart {
+    height: 40px;
+}
+
+.mini-chart {
+    width: 100%;
+    height: 100%;
+}
+/* aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa */
+.metric-progress {
+    height: 6px;
+    background: var(--gray-5);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan-40), var(--cyan-50));
+    border-radius: 3px;
+    transition: width var(--transition-slow) ease-out;
+}
+
+.metric-subtext {
+    font-size: 13px;
+    color: var(--gray-50);
+    margin-top: var(--spacing-sm);
+}
+
+/* 运动员监控区 */
+.athletes-section {
+    margin-bottom: var(--spacing-xl);
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.section-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--gray-90);
+}
+
+.section-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.view-toggle {
+    display: flex;
+    background: var(--gray-5);
+    border-radius: var(--radius-md);
+    padding: 2px;
+}
+
+.toggle-btn {
+    padding: 6px 12px;
+    border: none;
+    background: transparent;
+    color: var(--gray-60);
+    font-size: 13px;
+    font-weight: 500;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.toggle-btn.active {
+    background: white;
+    color: var(--gray-90);
+    box-shadow: var(--shadow-sm);
+}
+
+.filter-select {
+    padding: 8px 12px;
+    padding-right: 32px;
+    border: 1px solid var(--gray-10);
+    border-radius: var(--radius-md);
+    background: white;
+    color: var(--gray-70);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23838a9a' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 16px;
+}
+
+.athletes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* 运动员卡片 */
+.athlete-card {
+    background: white;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--gray-5);
+    padding: var(--spacing-lg);
+    transition: all var(--transition-base);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.athlete-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+    border-color: var(--gray-10);
+}
+
+.athlete-card.placeholder {
+    background: var(--gray-0);
+    border: 2px dashed var(--gray-10);
+    min-height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.placeholder-content {
+    width: 80%;
+    height: 80%;
+    background: linear-gradient(90deg, var(--gray-5) 0%, var(--gray-0) 50%, var(--gray-5) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+    border-radius: var(--radius-md);
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+.athlete-header {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.athlete-avatar {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, var(--cyan-30), var(--cyan-50));
+    color: white;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+
+.athlete-info {
+    flex: 1;
+}
+
+.athlete-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gray-90);
+    margin-bottom: 2px;
+}
+
+.athlete-level {
+    font-size: 12px;
+    color: var(--gray-50);
+    background: var(--gray-5);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    display: inline-block;
+}
+
+.athlete-status {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.athlete-status.online {
+    background: var(--success);
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.athlete-status.offline {
+    background: var(--gray-30);
+}
+
+/* 运动员指标 */
+.athlete-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md);
+    background: var(--gray-0);
+    border-radius: var(--radius-md);
+}
+
+.metric-row {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.metric-name {
+    color: var(--gray-50);
+    width: 40px;
+    font-weight: 500;
+}
+
+.metric-val {
+    flex: 1;
+    color: var(--gray-90);
+    font-weight: 600;
+}
+
+.metric-val.warning {
+    color: var(--warning);
+}
+
+.metric-change {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+}
+
+.metric-change.up {
+    color: var(--success);
+    background: #d1fae5;
+}
+
+.metric-change.down {
+    color: var(--danger);
+    background: #fee2e2;
+}
+
+.metric-change.neutral {
+    color: var(--gray-50);
+    background: var(--gray-5);
+}
+
+.metric-change.warning {
+    color: var(--warning);
+    background: #fef3c7;
+    font-size: 11px;
+}
+
+/* 训练状态 */
+.athlete-training {
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--gray-5);
+}
+
+.training-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.status-label {
+    font-size: 12px;
+    color: var(--gray-50);
+    font-weight: 500;
+}
+
+.status-value {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+}
+
+.status-value.completed {
+    color: var(--success);
+    background: #d1fae5;
+}
+
+.status-value.pending {
+    color: var(--warning);
+    background: #fef3c7;
+}
+
+.training-detail {
+    font-size: 13px;
+    color: var(--gray-60);
+}
+
+/* 运动员操作按钮 */
+.athlete-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--gray-5);
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--gray-10);
+    background: white;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-icon:hover {
+    background: var(--gray-0);
+    border-color: var(--gray-20);
+}
+
+.btn-icon::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    background: var(--gray-60);
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+}
+
+.btn-icon.message::after {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z'/%3E%3C/svg%3E");
+}
+
+.btn-icon.chart::after {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpolyline points='22 12 18 12 15 21 9 3 6 12 2 12'/%3E%3C/svg%3E");
+}
+
+.btn-text-small {
+    flex: 1;
+    padding: 6px 12px;
+    background: var(--cyan-50);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.btn-text-small:hover {
+    background: var(--cyan-60);
+}
+
+/* 快速操作区 */
+.quick-actions {
+    margin-top: var(--spacing-2xl);
+}
+
+.quick-actions h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--gray-90);
+    margin-bottom: var(--spacing-lg);
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--spacing-md);
+}
+
+.action-card {
+    background: white;
+    border: 1px solid var(--gray-5);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.action-card:hover {
+    border-color: var(--cyan-30);
+    background: var(--cyan-0);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.action-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, var(--cyan-5), var(--cyan-10));
+    position: relative;
+}
+
+.action-icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    background: var(--cyan-60);
+    mask-size: contain;
+    mask-repeat: no-repeat;
+    mask-position: center;
+}
+
+.action-icon.create-plan::after {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7'/%3E%3Cpath d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z'/%3E%3C/svg%3E");
+}
+
+.action-icon.add-athlete::after {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='8.5' cy='7' r='4'/%3E%3Cline x1='20' y1='8' x2='20' y2='14'/%3E%3Cline x1='23' y1='11' x2='17' y2='11'/%3E%3C/svg%3E");
+}
+
+.action-icon.export-report::after {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Cpath d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4'/%3E%3Cpolyline points='7 10 12 15 17 10'/%3E%3Cline x1='12' y1='15' x2='12' y2='3'/%3E%3C/svg%3E");
+}
+
+.action-icon.schedule-test::after {
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpolyline points='12 6 12 12 16 14'/%3E%3C/svg%3E");
+}
+
+.action-card span {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-70);
+    text-align: center;
+}
+
+/* 响应式设计 */
+@media (max-width: 1280px) {
+    .athletes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+@media (max-width: 1024px) {
+    .nav-container {
+        padding: 0 var(--spacing-md);
+    }
+    
+    .main-content {
+        padding: var(--spacing-lg) var(--spacing-md);
+    }
+    
+    .metrics-overview {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .athletes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+    
+    .nav-left {
+        gap: var(--spacing-lg);
+    }
+    
+    .user-info {
+        display: none;
+    }
+    
+    .alerts-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .metrics-overview {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+    
+    .section-controls {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .athletes-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 加载动画 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert-card,
+.metric-card,
+.athlete-card,
+.action-card {
+    animation: fadeIn var(--transition-slow) ease-out;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--gray-0);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gray-20);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-30);
+}
+
+/* 焦点样式 */
+button:focus-visible,
+a:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--cyan-40);
+    outline-offset: 2px;
+}
+
+/* 禁用状态 */
+button:disabled,
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 工具类 */
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+.mt-xl { margin-top: var(--spacing-xl); }
+
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.mb-xl { margin-bottom: var(--spacing-xl); }
+
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+.gap-lg { gap: var(--spacing-lg); }
+.gap-xl { gap: var(--spacing-xl); }
+
+/* 深色模式准备（预留） */
+@media (prefers-color-scheme: dark) {
+    /* 深色模式样式将在后续版本实现 */
+}
+
+/* 打印样式 */
+@media print {
+    .navbar,
+    .nav-actions,
+    .btn-icon,
+    .btn-text,
+    .btn-primary-small,
+    .btn-secondary-small,
+    .btn-text-small,
+    .action-card {
+        display: none;
+    }
+    
+    .main-content {
+        padding: 0;
+    }
+    
+    .athlete-card,
+    .metric-card,
+    .alert-card {
+        break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid var(--gray-20);
+    }
+}

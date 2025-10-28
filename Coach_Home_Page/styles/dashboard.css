@@ -1,0 +1,608 @@
+/* ==========================================
+   关键指标概览
+   ========================================== */
+
+.metrics-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.metric-card {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    padding: var(--spacing-lg);
+    background-color: white;
+    border: 1px solid var(--gray-10);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xs);
+    transition: all var(--transition-base);
+}
+
+.metric-card:hover {
+    border-color: var(--cyan-20);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+
+.metric-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
+.metric-icon-cyan {
+    color: var(--cyan-50);
+    background-color: var(--cyan-5);
+}
+
+.metric-icon-green {
+    color: var(--success);
+    background-color: var(--success-light);
+}
+
+.metric-icon-orange {
+    color: var(--warning);
+    background-color: var(--warning-light);
+}
+
+.metric-icon-purple {
+    color: #9c27b0;
+    background-color: #f3e5f5;
+}
+
+.metric-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.metric-label {
+    font-size: 0.875rem;
+    color: var(--gray-60);
+    margin-bottom: var(--spacing-xs);
+}
+
+.metric-value {
+    font-size: 2rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--gray-100);
+    line-height: 1.2;
+    margin-bottom: var(--spacing-xs);
+}
+
+.metric-unit {
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--gray-60);
+    margin-left: var(--spacing-xs);
+}
+
+.metric-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-weight: var(--font-weight-medium);
+    border-radius: var(--radius-full);
+}
+
+.metric-trend.positive {
+    color: var(--success);
+    background-color: var(--success-light);
+}
+
+.metric-trend.negative {
+    color: var(--error);
+    background-color: var(--error-light);
+}
+
+.metric-trend.neutral {
+    color: var(--gray-60);
+    background-color: var(--gray-5);
+}
+
+.metric-trend svg {
+    width: 12px;
+    height: 12px;
+}
+
+.metric-secondary {
+    font-size: 0.75rem;
+    color: var(--gray-60);
+}
+
+/* ==========================================
+   紧急提醒区域
+   ========================================== */
+
+.alerts-section {
+    margin-bottom: var(--spacing-2xl);
+}
+
+.alerts-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.alert-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: white;
+    border: 1px solid var(--gray-10);
+    border-left-width: 3px;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+}
+
+.alert-item:hover {
+    box-shadow: var(--shadow-sm);
+    transform: translateX(4px);
+}
+
+.alert-item.alert-urgent {
+    border-left-color: var(--error);
+    background-color: var(--error-light);
+}
+
+.alert-item.alert-warning {
+    border-left-color: var(--warning);
+    background-color: var(--warning-light);
+}
+
+.alert-item.alert-info {
+    border-left-color: var(--cyan-50);
+    background-color: var(--info-light);
+}
+
+.alert-indicator {
+    position: absolute;
+    top: 50%;
+    left: -2px;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    background-color: currentColor;
+    border-radius: var(--radius-full);
+}
+
+.alert-urgent .alert-indicator {
+    color: var(--error);
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.alert-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
+.alert-urgent .alert-icon {
+    color: var(--error);
+}
+
+.alert-warning .alert-icon {
+    color: var(--warning);
+}
+
+.alert-info .alert-icon {
+    color: var(--cyan-50);
+}
+
+.alert-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.alert-title {
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--gray-90);
+    margin-bottom: var(--spacing-xs);
+}
+
+.alert-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    font-size: 0.75rem;
+    color: var(--gray-60);
+}
+
+.alert-time::after {
+    content: '•';
+    margin-left: var(--spacing-md);
+    color: var(--gray-40);
+}
+
+.alert-action {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.75rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--cyan-60);
+    background-color: white;
+    border: 1px solid var(--cyan-20);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    flex-shrink: 0;
+}
+
+.alert-action:hover {
+    color: white;
+    background-color: var(--cyan-50);
+    border-color: var(--cyan-50);
+}
+
+/* ==========================================
+   运动员卡片墙
+   ========================================== */
+
+.athletes-section {
+    margin-bottom: var(--spacing-2xl);
+}
+
+.section-filters {
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.filter-btn {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--gray-70);
+    background-color: transparent;
+    border: 1px solid var(--gray-20);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.filter-btn:hover {
+    color: var(--cyan-50);
+    border-color: var(--cyan-30);
+    background-color: var(--cyan-0);
+}
+
+.filter-btn.active {
+    color: var(--cyan-60);
+    background-color: var(--cyan-5);
+    border-color: var(--cyan-30);
+}
+
+.athletes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* ==========================================
+   运动员卡片
+   ========================================== */
+
+.athlete-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--spacing-lg);
+    background-color: white;
+    border: 1px solid var(--gray-10);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-base);
+}
+
+.athlete-card:hover {
+    border-color: var(--cyan-20);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px);
+}
+
+/* 运动员头部 */
+.athlete-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-md);
+    border-bottom: 1px solid var(--gray-5);
+}
+
+.athlete-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.athlete-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.athlete-name {
+    font-size: 1.125rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-100);
+    margin-bottom: var(--spacing-xs);
+}
+
+.athlete-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+    font-size: 0.75rem;
+    color: var(--gray-60);
+}
+
+.athlete-level {
+    padding: 2px 8px;
+    background-color: var(--gray-5);
+    border-radius: var(--radius-full);
+}
+
+.athlete-period {
+    /* 无额外样式 */
+}
+
+.athlete-status {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: var(--font-weight-medium);
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.status-active {
+    color: var(--success);
+    background-color: var(--success-light);
+}
+
+.status-warning {
+    color: var(--warning);
+    background-color: var(--warning-light);
+}
+
+.status-excellent {
+    color: var(--success);
+    background-color: var(--success-light);
+    border: 1px solid var(--success);
+}
+
+/* 运动员指标 */
+.athlete-metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.athlete-metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.metric-item-label {
+    font-size: 0.75rem;
+    color: var(--gray-60);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.metric-item-value {
+    font-size: 1.5rem;
+    font-weight: var(--font-weight-bold);
+    color: var(--gray-100);
+    line-height: 1;
+}
+
+.metric-item-unit {
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--gray-60);
+    margin-left: 2px;
+}
+
+.metric-item-change {
+    font-size: 0.75rem;
+    font-weight: var(--font-weight-medium);
+}
+
+.metric-item-change.positive {
+    color: var(--success);
+}
+
+.metric-item-change.negative {
+    color: var(--error);
+}
+
+.metric-item-change.neutral {
+    color: var(--gray-60);
+}
+
+.metric-item-change.warning {
+    color: var(--warning);
+}
+
+/* 训练进度 */
+.athlete-progress {
+    margin-bottom: var(--spacing-md);
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xs);
+}
+
+.progress-label {
+    font-size: 0.75rem;
+    color: var(--gray-60);
+}
+
+.progress-value {
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--gray-90);
+}
+
+.progress-bar {
+    height: 6px;
+    background-color: var(--gray-10);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--cyan-50) 0%, var(--cyan-40) 100%);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-slow);
+}
+
+.progress-fill-complete {
+    background: linear-gradient(90deg, var(--success) 0%, #66bb6a 100%);
+}
+
+/* 运动员操作 */
+.athlete-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-xs);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--gray-5);
+}
+
+/* 占位卡片 */
+.athlete-card-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 320px;
+    background-color: var(--gray-0);
+    border-style: dashed;
+    border-color: var(--gray-20);
+    cursor: pointer;
+}
+
+.athlete-card-placeholder:hover {
+    border-color: var(--cyan-30);
+    background-color: var(--cyan-0);
+    transform: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.placeholder-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    color: var(--gray-50);
+}
+
+.placeholder-content svg {
+    color: var(--gray-40);
+    transition: color var(--transition-fast);
+}
+
+.athlete-card-placeholder:hover .placeholder-content svg {
+    color: var(--cyan-50);
+}
+
+.placeholder-text {
+    font-size: 0.875rem;
+    font-weight: var(--font-weight-medium);
+    color: var(--gray-60);
+}
+
+/* ==========================================
+   响应式设计
+   ========================================== */
+
+@media (max-width: 1200px) {
+    .metrics-overview {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .athletes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .metrics-overview {
+        grid-template-columns: 1fr;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+    
+    .section-filters {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .filter-btn {
+        white-space: nowrap;
+    }
+    
+    .athletes-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .alert-item {
+        flex-wrap: wrap;
+    }
+    
+    .alert-action {
+        width: 100%;
+        margin-top: var(--spacing-xs);
+    }
+}
+
+@media (max-width: 480px) {
+    .metric-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .metric-icon {
+        margin: 0 auto;
+    }
+    
+    .athlete-metrics {
+        grid-template-columns: 1fr;
+    }
+}
+

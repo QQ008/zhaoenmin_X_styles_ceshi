@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X_ASCENT - 教练控制台</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- 顶部导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-left">
+                <div class="logo">
+                    <svg class="logo-icon" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 5 L35 20 L20 35 L5 20 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+                        <circle cx="20" cy="20" r="3" fill="currentColor"/>
+                    </svg>
+                    <span class="logo-text">X_ASCENT</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#" class="nav-item active">
+                        <span class="nav-icon dashboard"></span>
+                        <span>控制台</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon calendar"></span>
+                        <span>训练计划</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon analytics"></span>
+                        <span>数据分析</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <span class="nav-icon athletes"></span>
+                        <span>运动员</span>
+                    </a>
+                </div>
+            </div>
+            <div class="nav-right">
+                <div class="nav-actions">
+                    <button class="nav-button notification">
+                        <span class="notification-dot"></span>
+                    </button>
+                    <button class="nav-button search"></button>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">JD</div>
+                    <div class="user-info">
+                        <span class="user-name">John Doe</span>
+                        <span class="user-role">高级教练</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区域 -->
+    <main class="main-content">
+        <!-- 紧急通知栏 -->
+        <section class="alerts-section">
+            <div class="alerts-header">
+                <h2>需要关注</h2>
+                <button class="btn-text">查看全部</button>
+            </div>
+            <div class="alerts-grid">
+                <div class="alert-card priority-high">
+                    <div class="alert-icon"></div>
+                    <div class="alert-content">
+                        <h3>训练计划调整请求</h3>
+                        <p>张明 请求调整本周四的间歇训练强度</p>
+                        <span class="alert-time">2小时前</span>
+                    </div>
+                    <button class="btn-primary-small">处理</button>
+                </div>
+                <div class="alert-card priority-medium">
+                    <div class="alert-icon"></div>
+                    <div class="alert-content">
+                        <h3>FTP测试提醒</h3>
+                        <p>李娜 已超过8周未更新FTP数据</p>
+                        <span class="alert-time">1天前</span>
+                    </div>
+                    <button class="btn-secondary-small">安排测试</button>
+                </div>
+                <div class="alert-card priority-low">
+                    <div class="alert-icon"></div>
+                    <div class="alert-content">
+                        <h3>训练负荷异常</h3>
+                        <p>王强 本周TSS累积超出建议范围15%</p>
+                        <span class="alert-time">3天前</span>
+                    </div>
+                    <button class="btn-secondary-small">查看详情</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 关键指标概览 -->
+        <section class="metrics-overview">
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-label">活跃运动员</span>
+                    <span class="metric-trend up">+12%</span>
+                </div>
+                <div class="metric-value">24</div>
+                <div class="metric-chart">
+                    <svg viewBox="0 0 100 40" class="mini-chart">
+                        <polyline points="0,35 20,30 40,20 60,25 80,15 100,10" 
+                                  fill="none" 
+                                  stroke="var(--cyan-50)" 
+                                  stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-label">平均训练完成率</span>
+                    <span class="metric-trend up">+5%</span>
+                </div>
+                <div class="metric-value">87%</div>
+                <div class="metric-progress">
+                    <div class="progress-bar" style="width: 87%"></div>
+                </div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-label">本周总TSS</span>
+                    <span class="metric-trend neutral">持平</span>
+                </div>
+                <div class="metric-value">8,420</div>
+                <div class="metric-subtext">目标: 8,500</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-header">
+                    <span class="metric-label">平均CTL提升</span>
+                    <span class="metric-trend up">+8%</span>
+                </div>
+                <div class="metric-value">+3.2</div>
+                <div class="metric-subtext">过去4周</div>
+            </div>
+        </section>
+
+        <!-- 运动员卡片墙 -->
+        <section class="athletes-section">
+            <div class="section-header">
+                <h2>运动员监控</h2>
+                <div class="section-controls">
+                    <div class="view-toggle">
+                        <button class="toggle-btn active">卡片</button>
+                        <button class="toggle-btn">列表</button>
+                    </div>
+                    <select class="filter-select">
+                        <option>全部运动员</option>
+                        <option>精英组</option>
+                        <option>发展组</option>
+                        <option>基础组</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="athletes-grid">
+                <!-- 运动员卡片1 -->
+                <div class="athlete-card">
+                    <div class="athlete-header">
+                        <div class="athlete-avatar">ZM</div>
+                        <div class="athlete-info">
+                            <h3>张明</h3>
+                            <span class="athlete-level">精英组</span>
+                        </div>
+                        <div class="athlete-status online"></div>
+                    </div>
+                    
+                    <div class="athlete-metrics">
+                        <div class="metric-row">
+                            <span class="metric-name">FTP</span>
+                            <span class="metric-val">285W</span>
+                            <span class="metric-change up">+5W</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-name">CTL</span>
+                            <span class="metric-val">78</span>
+                            <span class="metric-change up">+2</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-name">TSB</span>
+                            <span class="metric-val">-8</span>
+                            <span class="metric-change neutral">0</span>
+                        </div>
+                    </div>
+                    
+                    <div class="athlete-training">
+                        <div class="training-status">
+                            <span class="status-label">今日训练</span>
+                            <span class="status-value completed">已完成</span>
+                        </div>
+                        <div class="training-detail">
+                            耐力骑行 2h | TSS: 120
+                        </div>
+                    </div>
+                    
+                    <div class="athlete-actions">
+                        <button class="btn-icon message"></button>
+                        <button class="btn-icon chart"></button>
+                        <button class="btn-text-small">查看详情</button>
+                    </div>
+                </div>
+
+                <!-- 运动员卡片2 -->
+                <div class="athlete-card">
+                    <div class="athlete-header">
+                        <div class="athlete-avatar">LN</div>
+                        <div class="athlete-info">
+                            <h3>李娜</h3>
+                            <span class="athlete-level">精英组</span>
+                        </div>
+                        <div class="athlete-status offline"></div>
+                    </div>
+                    
+                    <div class="athlete-metrics">
+                        <div class="metric-row">
+                            <span class="metric-name">FTP</span>
+                            <span class="metric-val warning">240W</span>
+                            <span class="metric-change warning">需更新</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-name">CTL</span>
+                            <span class="metric-val">72</span>
+                            <span class="metric-change down">-1</span>
+                        </div>
+                        <div class="metric-row">
+                            <span class="metric-name">TSB</span>
+                            <span class="metric-val">+5</span>
+                            <span class="metric-change up">+3</span>
+                        </div>
+                    </div>
+                    
+                    <div class="athlete-training">
+                        <div class="training-status">
+                            <span class="status-label">今日训练</span>
+                            <span class="status-value pending">待完成</span>
+                        </div>
+                        <div class="training-detail">
+                            间歇训练 1.5h | 目标TSS: 95
+                        </div>
+                    </div>
+                    
+                    <div class="athlete-actions">
+                        <button class="btn-icon message"></button>
+                        <button class="btn-icon chart"></button>
+                        <button class="btn-text-small">查看详情</button>
+                    </div>
+                </div>
+
+                <!-- 更多运动员卡片占位 -->
+                <div class="athlete-card placeholder">
+                    <div class="placeholder-content">
+                        <!-- 占位内容 -->
+                    </div>
+                </div>
+                
+                <div class="athlete-card placeholder">
+                    <div class="placeholder-content">
+                        <!-- 占位内容 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 快速操作区 -->
+        <section class="quick-actions">
+            <h2>快速操作</h2>
+            <div class="actions-grid">
+                <button class="action-card">
+                    <div class="action-icon create-plan"></div>
+                    <span>创建训练计划</span>
+                </button>
+                <button class="action-card">
+                    <div class="action-icon add-athlete"></div>
+                    <span>添加运动员</span>
+                </button>
+                <button class="action-card">
+                    <div class="action-icon export-report"></div>
+                    <span>导出周报</span>
+                </button>
+                <button class="action-card">
+                    <div class="action-icon schedule-test"></div>
+                    <span>安排测试</span>
+                </button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
