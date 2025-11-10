@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>X_ASCENT Pro · 移动端首页</title>
+    <style>
+        :root {
+            /* 灰度色板 */
+            --gray-0: #f8f9fa;
+            --gray-5: #e3e6ec;
+            --gray-10: #d2d6de;
+            --gray-20: #b6bcc8;
+            --gray-30: #9da4b2;
+            --gray-40: #838a9a;
+            --gray-50: #717888;
+            --gray-60: #595f6d;
+            --gray-70: #444954;
+            --gray-80: #30353f;
+            --gray-90: #1f2227;
+            --gray-100: #0f1013;
+
+            /* Cyan 主题色 */
+            --cyan-0: #eafcff;
+            --cyan-5: #beecf3;
+            --cyan-10: #91dde7;
+            --cyan-20: #56c2d0;
+            --cyan-30: #3aabba;
+            --cyan-40: #2894a3;
+            --cyan-50: #1e7d8a;
+            --cyan-60: #176772;
+            --cyan-70: #13545d;
+            --cyan-80: #0f464c;
+            --cyan-90: #0d393f;
+            --cyan-100: #0b2e32;
+
+            --radius-lg: 24px;
+            --radius-md: 18px;
+            --radius-sm: 12px;
+            --shadow-soft: 0 16px 40px rgba(15, 16, 19, 0.18);
+            --shadow-card: 0 10px 24px rgba(23, 103, 114, 0.18);
+            --gradient-cyan: linear-gradient(140deg, var(--cyan-30), var(--cyan-60));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "SF Pro Display", "Inter", "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: radial-gradient(circle at 20% -10%, rgba(56, 194, 208, 0.35), transparent 55%),
+                        radial-gradient(circle at 80% -20%, rgba(17, 103, 114, 0.45), transparent 65%),
+                        var(--gray-100);
+            color: var(--gray-0);
+            padding: 24px 20px 40px;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .profile {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .profile span {
+            font-size: 0.85rem;
+            color: var(--gray-30);
+        }
+
+        .profile strong {
+            font-size: 1.3rem;
+            letter-spacing: 0.3px;
+        }
+
+        .level-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(17, 103, 114, 0.18);
+            border: 1px solid rgba(146, 221, 231, 0.35);
+            color: var(--cyan-10);
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 0.78rem;
+        }
+
+        .card {
+            background: rgba(31, 34, 39, 0.72);
+            border: 1px solid rgba(190, 236, 243, 0.08);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            backdrop-filter: blur(14px);
+            margin-bottom: 18px;
+        }
+
+        .card h2 {
+            font-size: 1.05rem;
+            color: var(--gray-0);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+        }
+
+        .card h2 span {
+            font-size: 0.78rem;
+            color: var(--cyan-5);
+        }
+
+        .training-load {
+            background: var(--gradient-cyan);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .training-load::after {
+            content: "";
+            position: absolute;
+            inset: -60% -60% auto;
+            height: 280px;
+            background: radial-gradient(circle, rgba(234, 252, 255, 0.18) 0%, transparent 70%);
+            opacity: 0.9;
+        }
+
+        .load-header {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 22px;
+        }
+
+        .load-metric {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .load-metric strong {
+            font-size: 2.6rem;
+            letter-spacing: -1px;
+        }
+
+        .load-metric span {
+            font-size: 0.75rem;
+            color: rgba(234, 252, 255, 0.9);
+        }
+
+        .load-distribution {
+            margin-top: 24px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .distribution-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .distribution-bar label {
+            font-size: 0.75rem;
+            color: rgba(248, 249, 250, 0.78);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .distribution-bar .bar {
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(234, 252, 255, 0.25);
+            overflow: hidden;
+        }
+
+        .distribution-bar .bar span {
+            display: block;
+            height: 100%;
+            border-radius: inherit;
+            background: rgba(234, 252, 255, 0.95);
+        }
+
+        .plan-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .plan-item {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            background: rgba(8, 10, 12, 0.2);
+            border: 1px solid rgba(145, 221, 231, 0.12);
+        }
+
+        .plan-time {
+            font-size: 0.85rem;
+            color: var(--cyan-10);
+            font-weight: 600;
+            min-width: 58px;
+        }
+
+        .plan-detail {
+            flex: 1;
+        }
+
+        .plan-detail strong {
+            display: block;
+            color: var(--gray-0);
+            letter-spacing: 0.2px;
+            margin-bottom: 4px;
+        }
+
+        .plan-detail span {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--gray-20);
+        }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.7rem;
+            letter-spacing: 0.2px;
+            color: var(--cyan-10);
+            border: 1px solid rgba(145, 221, 231, 0.3);
+            background: rgba(10, 18, 20, 0.3);
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .metric-card {
+            padding: 16px;
+            border-radius: var(--radius-md);
+            background: rgba(20, 24, 28, 0.7);
+            border: 1px solid rgba(131, 138, 154, 0.16);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .metric-card strong {
+            font-size: 1.2rem;
+            color: var(--gray-0);
+        }
+
+        .metric-card span {
+            font-size: 0.72rem;
+            color: var(--gray-30);
+        }
+
+        .trend {
+            font-size: 0.72rem;
+            color: var(--cyan-20);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .trend.negative {
+            color: var(--gray-40);
+        }
+
+        .cta-card {
+            margin-top: 12px;
+            padding: 20px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(150deg, rgba(8, 12, 15, 0.85), rgba(15, 34, 38, 0.76));
+            border: 1px solid rgba(23, 103, 114, 0.35);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+        }
+
+        .cta-card p {
+            font-size: 0.85rem;
+            color: var(--gray-10);
+            line-height: 1.4;
+        }
+
+        .cta-card button {
+            border: none;
+            background: var(--gradient-cyan);
+            color: var(--gray-0);
+            padding: 10px 18px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            box-shadow: 0 10px 24px rgba(17, 103, 114, 0.32);
+        }
+
+        footer {
+            margin-top: 34px;
+            font-size: 0.72rem;
+            color: var(--gray-40);
+            text-align: center;
+        }
+
+        footer span {
+            color: var(--cyan-40);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="profile">
+            <span>Elite 训练周 · 第 34 周</span>
+            <strong>早上好，Iris</strong>
+        </div>
+        <div class="level-chip">
+            PRO 骑行者
+        </div>
+    </header>
+
+    <section class="card training-load">
+        <div class="load-header">
+            <h2>今日训练负荷 <span>智能调控建议</span></h2>
+        </div>
+        <div class="load-metric">
+            <strong>342</strong>
+            <span>CTL · 90 / ATL · 78 · TSB +12</span>
+        </div>
+        <div class="load-distribution">
+            <div class="distribution-bar">
+                <label>
+                    <span>功率区间 3（Sweet Spot）</span>
+                    <span>今日 46 min</span>
+                </label>
+                <div class="bar">
+                    <span style="width: 68%;"></span>
+                </div>
+            </div>
+            <div class="distribution-bar">
+                <label>
+                    <span>心率区间 4（Tempo）</span>
+                    <span>今日 32 min</span>
+                </label>
+                <div class="bar">
+                    <span style="width: 52%;"></span>
+                </div>
+            </div>
+            <div class="distribution-bar">
+                <label>
+                    <span>高强间歇（VO2max）</span>
+                    <span>今日 18 min</span>
+                </label>
+                <div class="bar">
+                    <span style="width: 34%;"></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>今日训练计划 <span class="badge">教练 · Li Wei</span></h2>
+        <div class="plan-list">
+            <div class="plan-item">
+                <div class="plan-time">06:30</div>
+                <div class="plan-detail">
+                    <strong>力量启动 · 45′</strong>
+                    <span>高踏频热身 + 神经激活 · RPE 5</span>
+                </div>
+            </div>
+            <div class="plan-item">
+                <div class="plan-time">08:00</div>
+                <div class="plan-detail">
+                    <strong>耐力爬升 · 2h</strong>
+                    <span>山地连坡 · IF 0.78 · NP 245W</span>
+                </div>
+            </div>
+            <div class="plan-item">
+                <div class="plan-time">21:00</div>
+                <div class="plan-detail">
+                    <strong>恢复 & 伸展 · 25′</strong>
+                    <span>AI 指导放松 · HRV 监测</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>周度进展 <span>更新 · 06:20</span></h2>
+        <div class="analytics-grid">
+            <div class="metric-card">
+                <span>周累计里程</span>
+                <strong>318 km</strong>
+                <div class="trend">↑ 较上周 +12%</div>
+            </div>
+            <div class="metric-card">
+                <span>总爬升</span>
+                <strong>5,280 m</strong>
+                <div class="trend">↑ 山地专项周</div>
+            </div>
+            <div class="metric-card">
+                <span>平均功率（20′）</span>
+                <strong>312 W</strong>
+                <div class="trend">↑ 功率提升 +8W</div>
+            </div>
+            <div class="metric-card">
+                <span>最大摄氧量 VO₂max</span>
+                <strong>72 ml·kg⁻¹·min</strong>
+                <div class="trend negative">→ 稳定 · 建议周四测试</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>智能洞察 <span>AI 建议</span></h2>
+        <div class="plan-list">
+            <div class="plan-item">
+                <div class="plan-detail">
+                    <strong>今日 TSB +12 · 建议保持现强度</strong>
+                    <span>持续当前计划有助于 ATL 温和上升并保持 CTL 增长。</span>
+                </div>
+            </div>
+            <div class="plan-item">
+                <div class="plan-detail">
+                    <strong>睡眠质量波动 · 需关注</strong>
+                    <span>最近 3 日深睡时长下降 12%，建议 22:30 前完成恢复。</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="cta-card">
+        <p>今晚 20:30 与教练同步策略，解锁赛前模拟场景。</p>
+        <button>预约战术会议</button>
+    </div>
+
+    <footer>
+        X_ASCENT Pro · <span>数据驱动你的攀升</span>
+    </footer>
+</body>
+</html>
+

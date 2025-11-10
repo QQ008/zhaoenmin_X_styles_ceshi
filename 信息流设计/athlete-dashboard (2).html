@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X_ASCENT - 我的训练</title>
+    <style>
+        :root {
+            /* 灰度色板 */
+            --gray-0: #f8f9fa;
+            --gray-5: #e3e6ec;
+            --gray-10: #d2d6de;
+            --gray-20: #b6bcc8;
+            --gray-30: #9da4b2;
+            --gray-40: #838a9a;
+            --gray-50: #717888;
+            --gray-60: #595f6d;
+            --gray-70: #444954;
+            --gray-80: #30353f;
+            --gray-90: #1f2227;
+            --gray-100: #0f1013;
+            
+            /* 主题色 - Cyan */
+            --cyan-0: #eafcff;
+            --cyan-5: #beecf3;
+            --cyan-10: #91dde7;
+            --cyan-20: #56c2d0;
+            --cyan-30: #3aabba;
+            --cyan-40: #2894a3;
+            --cyan-50: #1e7d8a;
+            --cyan-60: #176772;
+            --cyan-70: #13545d;
+            --cyan-80: #0f464c;
+            --cyan-90: #0d393f;
+            --cyan-100: #0b2e32;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background: var(--gray-0);
+            color: var(--gray-90);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* 顶部导航栏 */
+        .top-nav {
+            background: white;
+            border-bottom: 1px solid var(--gray-10);
+            padding: 0 32px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--cyan-50);
+            letter-spacing: 1px;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--cyan-30), var(--cyan-50));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .user-name {
+            font-weight: 600;
+            color: var(--gray-90);
+        }
+        
+        /* 主容器 */
+        .main-container {
+            display: flex;
+            height: calc(100vh - 64px);
+        }
+        
+        /* 左侧状态面板 */
+        .status-panel {
+            width: 320px;
+            background: white;
+            border-right: 1px solid var(--gray-10);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* 上部信息区 */
+        .info-section {
+            padding: 24px;
+            border-bottom: 1px solid var(--gray-10);
+            overflow-y: auto;
+        }
+        
+        /* 下部导航区 */
+        .navigation-section {
+            flex: 1;
+            padding: 20px 24px;
+            overflow-y: auto;
+        }
+        
+        /* 身体状态卡片 */
+        .body-status-card {
+            background: linear-gradient(135deg, var(--cyan-70), var(--cyan-50));
+            padding: 20px;
+            border-radius: 12px;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .status-title {
+            font-size: 13px;
+            opacity: 0.9;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 16px;
+        }
+        
+        .status-level {
+            flex: 1;
+        }
+        
+        .status-level-text {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .status-level-desc {
+            font-size: 13px;
+            opacity: 0.85;
+        }
+        
+        .status-score {
+            text-align: right;
+        }
+        
+        .status-score-value {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .status-score-label {
+            font-size: 11px;
+            opacity: 0.8;
+        }
+        
+        .status-indicators {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .indicator {
+            flex: 1;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .indicator-value {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        
+        .indicator-label {
+            font-size: 10px;
+            opacity: 0.8;
+            text-transform: uppercase;
+        }
+        
+        /* 本周进度 */
+        .week-progress {
+            background: var(--gray-0);
+            padding: 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: 1px solid var(--gray-10);
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .progress-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--gray-90);
+        }
+        
+        .progress-stats {
+            font-size: 14px;
+            color: var(--cyan-60);
+            font-weight: 600;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--gray-10);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyan-50), var(--cyan-30));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-label {
+            font-size: 12px;
+            color: var(--gray-60);
+        }
+        
+        /* 教练消息 */
+        .coach-message {
+            background: var(--gray-90);
+            padding: 16px;
+            border-radius: 10px;
+            color: white;
+            margin-bottom: 20px;
+        }
+        
+        .coach-message-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .coach-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--cyan-30);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .coach-name {
+            font-size: 13px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+        
+        .coach-message-content {
+            font-size: 13px;
+            line-height: 1.5;
+            opacity: 0.85;
+        }
+        
+        /* 导航区标题 */
+        .navigation-header {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-50);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .calendar-days {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .calendar-day {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--gray-10);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .calendar-day:hover {
+            border-color: var(--cyan-30);
+            background: var(--cyan-0);
+        }
+        
+        .calendar-day.today {
+            border-color: var(--cyan-50);
+            background: var(--cyan-0);
+        }
+        
+        .calendar-day.completed {
+            border-color: var(--gray-10);
+            background: var(--gray-5);
+        }
+        
+        .calendar-day-date {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 40px;
+        }
+        
+        .calendar-day-number {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--gray-90);
+        }
+        
+        .calendar-day-name {
+            font-size: 10px;
+            color: var(--gray-50);
+        }
+        
+        .calendar-day-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .calendar-day-session {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--gray-90);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .calendar-day-tss {
+            font-size: 11px;
+            color: var(--gray-60);
+        }
+        
+        .calendar-day-status {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        
+        .calendar-day-status.completed {
+            background: var(--cyan-50);
+        }
+        
+        .calendar-day-status.pending {
+            background: var(--gray-30);
+        }
+        
+        /* 右侧主内容区 */
+        .main-content {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+            background: var(--gray-0);
+        }
+        
+        /* 今日标题区 */
+        .today-header {
+            margin-bottom: 32px;
+        }
+        
+        .today-date {
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .today-day {
+            font-size: 56px;
+            font-weight: 700;
+            color: var(--gray-90);
+            line-height: 1;
+        }
+        
+        .today-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .today-weekday {
+            font-size: 16px;
+            color: var(--gray-50);
+            letter-spacing: 0.5px;
+        }
+        
+        .today-full-date {
+            font-size: 18px;
+            color: var(--gray-70);
+            font-weight: 500;
+        }
+        
+        .today-greeting {
+            font-size: 20px;
+            color: var(--gray-70);
+            margin-bottom: 4px;
+        }
+        
+        .today-summary {
+            font-size: 15px;
+            color: var(--gray-50);
+        }
+        
+        /* 训练卡片 - 强调版（今日待完成）*/
+        .training-card-primary {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            border: 2px solid var(--cyan-40);
+            margin-bottom: 24px;
+            box-shadow: 0 4px 16px rgba(30, 125, 138, 0.1);
+        }
+        
+        .card-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: var(--cyan-50);
+            color: white;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+        
+        .card-title-large {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-90);
+            margin-bottom: 8px;
+        }
+        
+        .card-time {
+            font-size: 15px;
+            color: var(--gray-60);
+            margin-bottom: 24px;
+        }
+        
+        /* 关键指标 */
+        .key-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .key-metric {
+            padding: 18px;
+            background: var(--cyan-0);
+            border-radius: 10px;
+            border: 1px solid var(--cyan-10);
+            text-align: center;
+        }
+        
+        .key-metric-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--cyan-60);
+            margin-bottom: 4px;
+        }
+        
+        .key-metric-label {
+            font-size: 12px;
+            color: var(--gray-60);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        /* 训练描述 */
+        .training-description {
+            padding: 18px;
+            background: var(--gray-5);
+            border-radius: 10px;
+            margin-bottom: 24px;
+            border-left: 3px solid var(--cyan-40);
+        }
+        
+        .training-description-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-70);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .training-description-content {
+            font-size: 14px;
+            color: var(--gray-70);
+            line-height: 1.6;
+        }
+        
+        /* 训练强度可视化 */
+        .workout-structure {
+            margin-bottom: 24px;
+        }
+        
+        .workout-structure-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-70);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .workout-chart {
+            display: flex;
+            align-items: flex-end;
+            height: 120px;
+            gap: 2px;
+            padding: 10px 0;
+            border-bottom: 2px solid var(--gray-10);
+        }
+        
+        .workout-block {
+            flex: 1;
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .workout-block:hover {
+            opacity: 0.85;
+            transform: translateY(-2px);
+        }
+        
+        .workout-block.zone-1 { background: var(--gray-30); }
+        .workout-block.zone-2 { background: var(--cyan-20); }
+        .workout-block.zone-3 { background: var(--cyan-40); }
+        .workout-block.zone-4 { background: var(--cyan-60); }
+        .workout-block.zone-5 { background: var(--cyan-80); }
+        
+        .workout-block-label {
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 9px;
+            color: white;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        
+        .workout-phases {
+            display: flex;
+            gap: 16px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .phase-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--gray-60);
+        }
+        
+        .phase-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+        
+        /* 已完成训练卡片 */
+        .training-card-completed {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--gray-10);
+            margin-bottom: 20px;
+        }
+        
+        .card-header-simple {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .card-title-medium {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-90);
+        }
+        
+        .card-status-badge {
+            padding: 6px 12px;
+            background: var(--cyan-10);
+            color: var(--cyan-70);
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        /* 简化指标网格 */
+        .simple-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .simple-metric {
+            padding: 12px;
+            background: var(--gray-0);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .simple-metric-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--gray-90);
+            margin-bottom: 2px;
+        }
+        
+        .simple-metric-label {
+            font-size: 11px;
+            color: var(--gray-60);
+        }
+        
+        
+        /* 分隔标题 */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 32px 0 20px 0;
+        }
+        
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background: var(--gray-10);
+        }
+        
+        .divider-text {
+            font-size: 13px;
+            color: var(--gray-50);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 1200px) {
+            .key-metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .simple-metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .status-panel {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--gray-10);
+            }
+            
+            .key-metrics,
+            .simple-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部导航 -->
+    <nav class="top-nav">
+        <div class="logo">X_ASCENT</div>
+        <div class="user-profile">
+            <div class="user-avatar">ZL</div>
+            <div class="user-name">张磊</div>
+        </div>
+    </nav>
+
+    <!-- 主容器 -->
+    <div class="main-container">
+        <!-- 左侧状态面板 -->
+        <aside class="status-panel">
+            <!-- 上部信息区 -->
+            <div class="info-section">
+                <!-- 身体状态 -->
+                <div class="body-status-card">
+                <div class="status-title">今日状态</div>
+                <div class="status-main">
+                    <div class="status-level">
+                        <div class="status-level-text">良好</div>
+                        <div class="status-level-desc">适合中等强度训练</div>
+                    </div>
+                    <div class="status-score">
+                        <div class="status-score-value">7.8</div>
+                        <div class="status-score-label">状态评分</div>
+                    </div>
+                </div>
+                <div class="status-indicators">
+                    <div class="indicator">
+                        <div class="indicator-value">-12</div>
+                        <div class="indicator-label">TSB</div>
+                    </div>
+                    <div class="indicator">
+                        <div class="indicator-value">68</div>
+                        <div class="indicator-label">疲劳度</div>
+                    </div>
+                    <div class="indicator">
+                        <div class="indicator-value">56</div>
+                        <div class="indicator-label">体能</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 本周进度 -->
+            <div class="week-progress">
+                <div class="progress-header">
+                    <span class="progress-title">本周进度</span>
+                    <span class="progress-stats">5/7</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" style="width: 71%;"></div>
+                </div>
+                <div class="progress-label">487 / 520 TSS 已完成</div>
+            </div>
+            
+            <!-- 教练消息 -->
+            <div class="coach-message">
+                <div class="coach-message-header">
+                    <div class="coach-avatar">李</div>
+                    <span class="coach-name">教练 李明</span>
+                </div>
+                <div class="coach-message-content">
+                    本周表现很棒！今天耐力训练注意保持在Z2区间，不要过度。周末的长距离路线我已更新，爬坡路段会帮助你提升。
+                </div>
+            </div>
+            </div>
+            
+            <!-- 下部导航区 -->
+            <div class="navigation-section">
+                <div class="navigation-header">本周训练</div>
+                <div class="calendar-days">
+                    <div class="calendar-day completed">
+                        <div class="calendar-day-date">
+                            <div class="calendar-day-number">04</div>
+                            <div class="calendar-day-name">周一</div>
+                        </div>
+                        <div class="calendar-day-info">
+                            <div class="calendar-day-session">恢复骑行</div>
+                            <div class="calendar-day-tss">68 TSS</div>
+                        </div>
+                        <div class="calendar-day-status completed"></div>
+                    </div>
+                    
+                    <div class="calendar-day completed">
+                        <div class="calendar-day-date">
+                            <div class="calendar-day-number">05</div>
+                            <div class="calendar-day-name">周二</div>
+                        </div>
+                        <div class="calendar-day-info">
+                            <div class="calendar-day-session">间歇训练</div>
+                            <div class="calendar-day-tss">95 TSS</div>
+                        </div>
+                        <div class="calendar-day-status completed"></div>
+                    </div>
+                    
+                    <div class="calendar-day today">
+                        <div class="calendar-day-date">
+                            <div class="calendar-day-number">06</div>
+                            <div class="calendar-day-name">周三</div>
+                        </div>
+                        <div class="calendar-day-info">
+                            <div class="calendar-day-session">耐力训练 + 力量</div>
+                            <div class="calendar-day-tss">112 TSS</div>
+                        </div>
+                        <div class="calendar-day-status pending"></div>
+                    </div>
+                    
+                    <div class="calendar-day">
+                        <div class="calendar-day-date">
+                            <div class="calendar-day-number">07</div>
+                            <div class="calendar-day-name">周四</div>
+                        </div>
+                        <div class="calendar-day-info">
+                            <div class="calendar-day-session">恢复骑行</div>
+                            <div class="calendar-day-tss">72 TSS</div>
+                        </div>
+                        <div class="calendar-day-status pending"></div>
+                    </div>
+                    
+                    <div class="calendar-day">
+                        <div class="calendar-day-date">
+                            <div class="calendar-day-number">08</div>
+                            <div class="calendar-day-name">周五</div>
+                        </div>
+                        <div class="calendar-day-info">
+                            <div class="calendar-day-session">休息日</div>
+                            <div class="calendar-day-tss">0 TSS</div>
+                        </div>
+                        <div class="calendar-day-status pending"></div>
+                    </div>
+                    
+                    <div class="calendar-day">
+                        <div class="calendar-day-date">
+                            <div class="calendar-day-number">09</div>
+                            <div class="calendar-day-name">周六</div>
+                        </div>
+                        <div class="calendar-day-info">
+                            <div class="calendar-day-session">长距离骑行</div>
+                            <div class="calendar-day-tss">145 TSS</div>
+                        </div>
+                        <div class="calendar-day-status pending"></div>
+                    </div>
+                    
+                    <div class="calendar-day">
+                        <div class="calendar-day-date">
+                            <div class="calendar-day-number">10</div>
+                            <div class="calendar-day-name">周日</div>
+                        </div>
+                        <div class="calendar-day-info">
+                            <div class="calendar-day-session">节奏骑行</div>
+                            <div class="calendar-day-tss">88 TSS</div>
+                        </div>
+                        <div class="calendar-day-status pending"></div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧主内容 -->
+        <main class="main-content">
+            <!-- 今日头部 -->
+            <div class="today-header">
+                <div class="today-date">
+                    <div class="today-day">06</div>
+                    <div class="today-info">
+                        <span class="today-weekday">星期三</span>
+                        <span class="today-full-date">2025年11月6日</span>
+                    </div>
+                </div>
+                <div class="today-greeting">早上好，张磊</div>
+                <div class="today-summary">今天有 2 项训练任务，预计负荷 112 TSS</div>
+            </div>
+
+            <!-- 待完成训练 - 强调卡片 -->
+            <div class="training-card-primary">
+                <div class="card-badge">即将开始</div>
+                <h2 class="card-title-large">Zone 2 稳态耐力骑行</h2>
+                <div class="card-time">上午 06:30 - 08:30 · 户外骑行</div>
+                
+                <div class="key-metrics">
+                    <div class="key-metric">
+                        <div class="key-metric-value">85</div>
+                        <div class="key-metric-label">目标TSS</div>
+                    </div>
+                    <div class="key-metric">
+                        <div class="key-metric-value">2:00</div>
+                        <div class="key-metric-label">时长</div>
+                    </div>
+                    <div class="key-metric">
+                        <div class="key-metric-value">210W</div>
+                        <div class="key-metric-label">目标功率</div>
+                    </div>
+                </div>
+                
+                <!-- 训练强度结构 -->
+                <div class="workout-structure">
+                    <div class="workout-structure-title">训练结构</div>
+                    <div class="workout-chart">
+                        <!-- 热身 10分钟 Z1 -->
+                        <div class="workout-block zone-1" style="height: 25%; flex: 10;">
+                            <div class="workout-block-label">10'</div>
+                        </div>
+                        <!-- Z2主体 80分钟 -->
+                        <div class="workout-block zone-2" style="height: 55%; flex: 80;">
+                            <div class="workout-block-label">80'</div>
+                        </div>
+                        <!-- Z3间隔 15分钟 -->
+                        <div class="workout-block zone-3" style="height: 75%; flex: 15;">
+                            <div class="workout-block-label">15'</div>
+                        </div>
+                        <!-- 冷却 15分钟 Z1 -->
+                        <div class="workout-block zone-1" style="height: 25%; flex: 15;">
+                            <div class="workout-block-label">15'</div>
+                        </div>
+                    </div>
+                    <div class="workout-phases">
+                        <div class="phase-item">
+                            <div class="phase-color" style="background: var(--gray-30);"></div>
+                            <span>热身 / 冷却</span>
+                        </div>
+                        <div class="phase-item">
+                            <div class="phase-color" style="background: var(--cyan-20);"></div>
+                            <span>有氧耐力 Z2</span>
+                        </div>
+                        <div class="phase-item">
+                            <div class="phase-color" style="background: var(--cyan-40);"></div>
+                            <span>节奏骑行 Z3</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="training-description">
+                    <div class="training-description-title">训练目标</div>
+                    <div class="training-description-content">
+                        保持在Z2功率区间（180-220W），心率控制在135-150 bpm。全程稳定输出，不追求速度。选择平路为主的路线，踏频维持在85-95 rpm。重点提升有氧耐力基础。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 分隔线 -->
+            <div class="section-divider">
+                <div class="divider-line"></div>
+                <span class="divider-text">今日其他安排</span>
+                <div class="divider-line"></div>
+            </div>
+
+            <!-- 待完成训练 - 普通卡片 -->
+            <div class="training-card-completed">
+                <div class="card-header-simple">
+                    <h3 class="card-title-medium">核心 + 下肢力量训练</h3>
+                    <div class="card-status-badge" style="background: var(--gray-10); color: var(--gray-60);">计划中</div>
+                </div>
+                
+                <div class="simple-metrics">
+                    <div class="simple-metric">
+                        <div class="simple-metric-value">23</div>
+                        <div class="simple-metric-label">TSS</div>
+                    </div>
+                    <div class="simple-metric">
+                        <div class="simple-metric-value">1:00</div>
+                        <div class="simple-metric-label">时长</div>
+                    </div>
+                    <div class="simple-metric">
+                        <div class="simple-metric-value">12</div>
+                        <div class="simple-metric-label">组数</div>
+                    </div>
+                    <div class="simple-metric">
+                        <div class="simple-metric-value">16:00</div>
+                        <div class="simple-metric-label">开始</div>
+                    </div>
+                </div>
+                
+                <div class="training-description">
+                    <div class="training-description-title">训练内容</div>
+                    <div class="training-description-content">
+                        动态热身 10分钟 → 深蹲 4×8 → 单腿硬拉 3×10 → 平板支撑变式 4×45秒 → 侧桥 3×30秒 → 拉伸放松。注意核心收紧，保持动作质量优于重量。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 分隔线 -->
+            <div class="section-divider">
+                <div class="divider-line"></div>
+                <span class="divider-text">昨日回顾</span>
+                <div class="divider-line"></div>
+            </div>
+
+            <!-- 已完成训练展示 -->
+            <div class="training-card-completed">
+                <div class="card-header-simple">
+                    <h3 class="card-title-medium">VO2Max 间歇训练</h3>
+                    <div class="card-status-badge">已完成</div>
+                </div>
+                
+                <div class="simple-metrics">
+                    <div class="simple-metric">
+                        <div class="simple-metric-value">95</div>
+                        <div class="simple-metric-label">TSS</div>
+                    </div>
+                    <div class="simple-metric">
+                        <div class="simple-metric-value">1:45</div>
+                        <div class="simple-metric-label">时长</div>
+                    </div>
+                    <div class="simple-metric">
+                        <div class="simple-metric-value">245W</div>
+                        <div class="simple-metric-label">平均功率</div>
+                    </div>
+                    <div class="simple-metric">
+                        <div class="simple-metric-value">158</div>
+                        <div class="simple-metric-label">平均心率</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 日期切换交互
+        document.querySelectorAll('.calendar-day').forEach(day => {
+            day.addEventListener('click', function() {
+                document.querySelectorAll('.calendar-day').forEach(d => {
+                    d.classList.remove('today');
+                });
+                this.classList.add('today');
+                // 这里可以加载对应日期的数据
+                console.log('切换到选中的日期');
+            });
+        });
+        
+        // 训练结构图表悬停提示
+        document.querySelectorAll('.workout-block').forEach(block => {
+            block.addEventListener('mouseenter', function() {
+                this.style.opacity = '0.85';
+            });
+            block.addEventListener('mouseleave', function() {
+                this.style.opacity = '1';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,843 @@
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X_ASCENT Pro - 训练数据中心</title>
+    <style>
+        :root {
+            /* 灰度色板 */
+            --gray-0: #f8f9fa;
+            --gray-5: #e3e6ec;
+            --gray-10: #d2d6de;
+            --gray-20: #b6bcc8;
+            --gray-30: #9da4b2;
+            --gray-40: #838a9a;
+            --gray-50: #717888;
+            --gray-60: #595f6d;
+            --gray-70: #444954;
+            --gray-80: #30353f;
+            --gray-90: #1f2227;
+            --gray-100: #0f1013;
+            
+            /* 主题色 - Cyan */
+            --cyan-0: #eafcff;
+            --cyan-5: #beecf3;
+            --cyan-10: #91dde7;
+            --cyan-20: #56c2d0;
+            --cyan-30: #3aabba;
+            --cyan-40: #2894a3;
+            --cyan-50: #1e7d8a;
+            --cyan-60: #176772;
+            --cyan-70: #13545d;
+            --cyan-80: #0f464c;
+            --cyan-90: #0d393f;
+            --cyan-100: #0b2e32;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', sans-serif;
+            background: var(--gray-0);
+            color: var(--gray-90);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* 顶部导航栏 */
+        .header-nav {
+            background: white;
+            border-bottom: 1px solid var(--gray-5);
+            padding: 0 2rem;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--cyan-60);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .view-toggle {
+            display: flex;
+            background: var(--gray-5);
+            border-radius: 8px;
+            padding: 2px;
+        }
+
+        .view-btn {
+            padding: 6px 16px;
+            border: none;
+            background: transparent;
+            color: var(--gray-60);
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .view-btn.active {
+            background: white;
+            color: var(--cyan-60);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* 主容器 */
+        .main-container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* 时间轴视图 */
+        .timeline-view {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            gap: 0;
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* 日期列 */
+        .date-column {
+            background: var(--gray-5);
+            padding: 1.5rem 0;
+        }
+
+        .date-item {
+            padding: 1rem 1.5rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .date-item:hover {
+            background: var(--gray-10);
+        }
+
+        .date-item.active {
+            background: white;
+            border-left-color: var(--cyan-50);
+        }
+
+        .date-day {
+            font-size: 0.75rem;
+            color: var(--gray-50);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .date-number {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-80);
+            margin-top: 0.25rem;
+        }
+
+        .date-item.today .date-number {
+            color: var(--cyan-60);
+        }
+
+        /* 内容区域 */
+        .content-area {
+            padding: 1.5rem;
+            min-height: 600px;
+        }
+
+        /* 数据卡片网格 */
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* 数据卡片 */
+        .data-card {
+            background: var(--gray-0);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: 1px solid var(--gray-5);
+        }
+
+        .data-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            border-color: var(--cyan-20);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 0.875rem;
+            color: var(--gray-60);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-high {
+            background: var(--cyan-10);
+            color: var(--cyan-70);
+        }
+
+        .badge-normal {
+            background: var(--gray-10);
+            color: var(--gray-60);
+        }
+
+        .card-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--gray-90);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-unit {
+            font-size: 1rem;
+            color: var(--gray-50);
+            font-weight: 400;
+            margin-left: 0.25rem;
+        }
+
+        .card-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .trend-value {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .trend-up {
+            color: var(--cyan-60);
+        }
+
+        .trend-down {
+            color: var(--gray-50);
+        }
+
+        /* 训练计划卡片 */
+        .workout-card {
+            background: linear-gradient(135deg, var(--cyan-5), var(--cyan-10));
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--cyan-20);
+        }
+
+        .workout-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .workout-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--cyan-80);
+        }
+
+        .workout-duration {
+            background: white;
+            color: var(--cyan-60);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .workout-zones {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .zone-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .zone-label {
+            font-size: 0.75rem;
+            color: var(--gray-50);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .zone-value {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-90);
+            margin-top: 0.25rem;
+        }
+
+        /* 进度条 */
+        .progress-bar {
+            height: 6px;
+            background: var(--gray-10);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyan-40), var(--cyan-50));
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        /* 快速操作栏 */
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray-10);
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 1rem;
+            background: white;
+            border: 1px solid var(--gray-10);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: var(--gray-70);
+        }
+
+        .action-btn:hover {
+            background: var(--cyan-5);
+            border-color: var(--cyan-20);
+            color: var(--cyan-70);
+            transform: translateY(-1px);
+        }
+
+        .action-icon {
+            width: 24px;
+            height: 24px;
+            margin: 0 auto 0.5rem;
+            background: var(--gray-20);
+            border-radius: 6px;
+        }
+
+        .action-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .timeline-view {
+                grid-template-columns: 80px 1fr;
+            }
+            
+            .data-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="header-nav">
+        <div class="nav-brand">X_ASCENT Pro</div>
+        <div class="nav-actions">
+            <div class="view-toggle">
+                <button class="view-btn active">时间流</button>
+                <button class="view-btn">日历</button>
+                <button class="view-btn">分析</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="timeline-view">
+            <!-- 日期列 -->
+            <div class="date-column">
+                <div class="date-item">
+                    <div class="date-day">周一</div>
+                    <div class="date-number">07</div>
+                </div>
+                <div class="date-item">
+                    <div class="date-day">周二</div>
+                    <div class="date-number">08</div>
+                </div>
+                <div class="date-item today">
+                    <div class="date-day">周三</div>
+                    <div class="date-number">09</div>
+                </div>
+                <div class="date-item active">
+                    <div class="date-day">周四</div>
+                    <div class="date-number">10</div>
+                </div>
+                <div class="date-item">
+                    <div class="date-day">周五</div>
+                    <div class="date-number">11</div>
+                </div>
+            </div>
+
+            <!-- 内容区域 -->
+            <div class="content-area">
+                <!-- 训练计划卡片 -->
+                <div class="workout-card">
+                    <div class="workout-header">
+                        <div>
+                            <div class="workout-title">阈值间歇训练</div>
+                            <div style="color: var(--cyan-60); margin-top: 0.5rem;">功率区间 Z4-Z5 | TSS 85</div>
+                        </div>
+                        <div class="workout-duration">90 min</div>
+                    </div>
+                    <div class="workout-zones">
+                        <div class="zone-item">
+                            <div class="zone-label">热身</div>
+                            <div class="zone-value">15 min</div>
+                        </div>
+                        <div class="zone-item">
+                            <div class="zone-label">主训练</div>
+                            <div class="zone-value">4×12 min</div>
+                        </div>
+                        <div class="zone-item">
+                            <div class="zone-label">恢复</div>
+                            <div class="zone-value">3×3 min</div>
+                        </div>
+                        <div class="zone-item">
+                            <div class="zone-label">放松</div>
+                            <div class="zone-value">15 min</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数据卡片网格 -->
+                <div class="data-grid">
+                    <div class="data-card">
+                        <div class="card-header">
+                            <span class="card-title">功率输出</span>
+                            <span class="card-badge badge-high">高强度</span>
+                        </div>
+                        <div class="card-value">
+                            285<span class="card-unit">W</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%;"></div>
+                        </div>
+                        <div class="card-trend">
+                            <span class="trend-value trend-up">↑ 12W</span>
+                            <span style="color: var(--gray-50); font-size: 0.75rem;">较上周</span>
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <div class="card-header">
+                            <span class="card-title">心率区间</span>
+                            <span class="card-badge badge-normal">正常</span>
+                        </div>
+                        <div class="card-value">
+                            165<span class="card-unit">bpm</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 82%;"></div>
+                        </div>
+                        <div class="card-trend">
+                            <span class="trend-value trend-down">↓ 3bpm</span>
+                            <span style="color: var(--gray-50); font-size: 0.75rem;">较上周</span>
+                        </div>
+                    </div>
+
+                    <div class="data-card">
+                        <div class="card-header">
+                            <span class="card-title">训练负荷</span>
+                            <span class="card-badge badge-high">建设期</span>
+                        </div>
+                        <div class="card-value">
+                            4.2<span class="card-unit">CTL</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 65%;"></div>
+                        </div>
+                        <div class="card-trend">
+                            <span class="trend-value trend-up">↑ 0.8</span>
+                            <span style="color: var(--gray-50); font-size: 0.75rem;">本周累计</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 详细数据分析 -->
+                <div class="analysis-section">
+                    <h3 style="color: var(--gray-80); margin-bottom: 1.5rem; font-size: 1.125rem;">训练分析</h3>
+                    
+                    <div class="analysis-grid">
+                        <div class="analysis-card">
+                            <div class="analysis-header">
+                                <span class="analysis-title">功率分布</span>
+                                <span class="analysis-time">最近30天</span>
+                            </div>
+                            <div class="power-zones">
+                                <div class="zone-bar">
+                                    <div class="zone-info">
+                                        <span class="zone-name">Z1 恢复</span>
+                                        <span class="zone-percent">15%</span>
+                                    </div>
+                                    <div class="zone-progress">
+                                        <div class="zone-fill z1" style="width: 15%;"></div>
+                                    </div>
+                                </div>
+                                <div class="zone-bar">
+                                    <div class="zone-info">
+                                        <span class="zone-name">Z2 耐力</span>
+                                        <span class="zone-percent">35%</span>
+                                    </div>
+                                    <div class="zone-progress">
+                                        <div class="zone-fill z2" style="width: 35%;"></div>
+                                    </div>
+                                </div>
+                                <div class="zone-bar">
+                                    <div class="zone-info">
+                                        <span class="zone-name">Z3 节奏</span>
+                                        <span class="zone-percent">25%</span>
+                                    </div>
+                                    <div class="zone-progress">
+                                        <div class="zone-fill z3" style="width: 25%;"></div>
+                                    </div>
+                                </div>
+                                <div class="zone-bar">
+                                    <div class="zone-info">
+                                        <span class="zone-name">Z4 阈值</span>
+                                        <span class="zone-percent">20%</span>
+                                    </div>
+                                    <div class="zone-progress">
+                                        <div class="zone-fill z4" style="width: 20%;"></div>
+                                    </div>
+                                </div>
+                                <div class="zone-bar">
+                                    <div class="zone-info">
+                                        <span class="zone-name">Z5+ VO2Max</span>
+                                        <span class="zone-percent">5%</span>
+                                    </div>
+                                    <div class="zone-progress">
+                                        <div class="zone-fill z5" style="width: 5%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="analysis-card">
+                            <div class="analysis-header">
+                                <span class="analysis-title">疲劳度评估</span>
+                                <span class="analysis-time">实时</span>
+                            </div>
+                            <div class="fatigue-meter">
+                                <div class="meter-circle">
+                                    <svg width="120" height="120" viewBox="0 0 120 120">
+                                        <circle cx="60" cy="60" r="54" fill="none" stroke="var(--gray-10)" stroke-width="8"/>
+                                        <circle cx="60" cy="60" r="54" fill="none" stroke="url(#gradient)" stroke-width="8" 
+                                                stroke-dasharray="270 339" stroke-dashoffset="-42" stroke-linecap="round"/>
+                                        <defs>
+                                            <linearGradient id="gradient">
+                                                <stop offset="0%" stop-color="var(--cyan-30)"/>
+                                                <stop offset="100%" stop-color="var(--cyan-60)"/>
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                    <div class="meter-value">
+                                        <span class="meter-number">72</span>
+                                        <span class="meter-label">TSB</span>
+                                    </div>
+                                </div>
+                                <div class="fatigue-info">
+                                    <div class="info-item">
+                                        <span class="info-label">状态</span>
+                                        <span class="info-value" style="color: var(--cyan-60);">良好</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-label">建议</span>
+                                        <span class="info-value">适合高强度训练</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 快速操作 -->
+                <div class="quick-actions">
+                    <a href="#" class="action-btn">
+                        <div class="action-icon"></div>
+                        <div class="action-label">记录训练</div>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <div class="action-icon"></div>
+                        <div class="action-label">调整计划</div>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <div class="action-icon"></div>
+                        <div class="action-label">导出报告</div>
+                    </a>
+                    <a href="#" class="action-btn">
+                        <div class="action-icon"></div>
+                        <div class="action-label">分享教练</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        /* 分析区域样式 */
+        .analysis-section {
+            margin-top: 2.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--gray-10);
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .analysis-card {
+            background: white;
+            border: 1px solid var(--gray-10);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .analysis-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .analysis-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gray-80);
+        }
+
+        .analysis-time {
+            font-size: 0.75rem;
+            color: var(--gray-50);
+            background: var(--gray-5);
+            padding: 4px 8px;
+            border-radius: 6px;
+        }
+
+        /* 功率区间样式 */
+        .power-zones {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .zone-bar {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .zone-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .zone-name {
+            font-size: 0.875rem;
+            color: var(--gray-70);
+            font-weight: 500;
+        }
+
+        .zone-percent {
+            font-size: 0.875rem;
+            color: var(--gray-90);
+            font-weight: 600;
+        }
+
+        .zone-progress {
+            height: 8px;
+            background: var(--gray-5);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .zone-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .zone-fill.z1 { background: var(--cyan-10); }
+        .zone-fill.z2 { background: var(--cyan-20); }
+        .zone-fill.z3 { background: var(--cyan-30); }
+        .zone-fill.z4 { background: var(--cyan-50); }
+        .zone-fill.z5 { background: var(--cyan-70); }
+
+        /* 疲劳度仪表盘 */
+        .fatigue-meter {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .meter-circle {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+
+        .meter-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .meter-number {
+            display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--cyan-60);
+            line-height: 1;
+        }
+
+        .meter-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--gray-50);
+            margin-top: 0.25rem;
+            font-weight: 500;
+        }
+
+        .fatigue-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: var(--gray-0);
+            border-radius: 8px;
+        }
+
+        .info-label {
+            font-size: 0.875rem;
+            color: var(--gray-50);
+        }
+
+        .info-value {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-80);
+        }
+
+        /* 悬浮效果优化 */
+        .analysis-card {
+            transition: all 0.3s ease;
+        }
+
+        .analysis-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+            border-color: var(--cyan-20);
+        }
+
+        /* 响应式优化 */
+        @media (max-width: 1024px) {
+            .analysis-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .fatigue-meter {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .workout-zones {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .quick-actions {
+                flex-wrap: wrap;
+            }
+            
+            .action-btn {
+                flex: 1 1 calc(50% - 0.5rem);
+            }
+        }
+
+        /* 动画效果 */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .data-card, .workout-card, .analysis-card {
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        .data-card:nth-child(1) { animation-delay: 0.1s; }
+        .data-card:nth-child(2) { animation-delay: 0.2s; }
+        .data-card:nth-child(3) { animation-delay: 0.3s; }
+    </style>
+</body>
+</html>
